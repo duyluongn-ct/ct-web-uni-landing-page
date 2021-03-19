@@ -1,0 +1,56 @@
+@import '../../../../assets/styles/respond-mixin.scss';
+
+.thumbnailWrapper {
+  position: relative;
+  display: flex;
+  margin: -1px;
+  justify-content: center;
+
+  .thumbnailImg {
+    position: relative;
+    background: url(https://static.chotot.com/storage/default_images/c2c_ad_image.jpg) center center
+      no-repeat;
+    background-size: cover !important;
+    width: 100%;
+    border-radius: 2px;
+    overflow: hidden;
+    display: inline-block;
+
+    @media (max-width: 992px) {
+      width: 100%;
+      height: 100%;
+    }
+
+    &:after {
+      display: block;
+      padding-top: 100%;
+      content: '';
+    }
+
+    img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .imageNum {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      background: url(https://static.chotot.com/storage/chotot-icons/svg/number-image.svg) no-repeat;
+      width: 24px;
+      height: 20px;
+      font-weight: 700;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .text {
+        font-size: 11px;
+        line-height: 1.09;
+      }
+    }
+  }
+}

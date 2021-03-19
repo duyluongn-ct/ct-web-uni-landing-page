@@ -1,0 +1,24 @@
+.wrapper {
+  border-radius: 2px;
+  background-color: black;
+  color: #fff;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1001;
+  margin: 10px auto;
+  max-width: 95%;
+  padding: 10px;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s, opacity 1s ease-in-out;
+  text-align: center;
+  visibility: visible;
+  opacity: 0.8;
+  font-size: 14px;
+
+  @media (min-width: 768px) {
+    max-width: 500px;
+  }
+}

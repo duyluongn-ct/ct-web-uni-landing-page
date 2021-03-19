@@ -1,0 +1,23 @@
+@import './ct-variables.scss';
+
+.icon {
+  display: inline-block;
+  height: 30px;
+  width: 30px;
+  vertical-align: middle;
+
+  @media (max-width: $screen-xs-max) {
+    height: 26px;
+    width: 26px;
+  }
+
+  @media (max-width: $screen-xs-min) {
+    height: 24px;
+    width: 24px;
+  }
+}
+
+.shop_verified_icon {
+  width: 25px !important;
+  height: 25px !important;
+}

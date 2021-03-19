@@ -1,0 +1,98 @@
+variables:
+  GITOPS_HELM_YAML_FILE: 'app-web/market-price.yaml'
+  DEV_GATEWAY_DOMAIN: 'gateway.chotot.org'
+  UAT_GATEWAY_DOMAIN: 'gateway.chotot.org'
+
+before_script:
+  - pwd
+  - export DIST_NAME=market-price
+  - export VERSION=`wsm new-versioning $CI_BUILD_REF_NAME`
+  - export BUILD_ID="${CI_COMMIT_SHORT_SHA}"
+  - echo DIST_NAME=$DIST_NAME
+  - echo BUILD_ID $BUILD_ID
+  - echo WILL BUILD VERSION $VERSION
+
+stages:
+  - bump_tag
+  - build-uat
+  - build-production
+  - deploy_dev
+  - deploy_uat
+  - deploy_production
+
+bump_tag:
+  stage: bump_tag
+  script:
+    - wsm bump-tag
+  tags:
+    - shell
+  only:
+    - master
+
+build-uat:
+  stage: build-uat
+  script:
+    - echo $GCP_PRO > ./chotot-gcs.json
+    - export GOOGLE_APPLICATION_CREDENTIALS='./chotot-gcs.json'
+    - echo {\"version\":\"$BUILD_ID\"} > ./buildid.json
+    - yarn install
+    - NODE_ENV=production yarn build
+    - NODE_ENV=production ENV=staging BUCKET_NAME=static-chotot-com yarn googlecloud:upload
+    - docker build --build-arg BUILD_ID=$BUILD_ID -t docker.chotot.org/$DIST_NAME:$VERSION .
+    - docker push docker.chotot.org/$DIST_NAME:$VERSION
+  tags:
+    - shell
+  only:
+    - uat
+
+build-production:
+  stage: build-production
+  script:
+    - echo $GCP_PRO > ./chotot-gcs.json
+    - export GOOGLE_APPLICATION_CREDENTIALS='./chotot-gcs.json'
+    - echo {\"version\":\"$BUILD_ID\"} > ./buildid.json
+    - yarn install
+    - NODE_ENV=production yarn build
+    - NODE_ENV=production ENV=production BUCKET_NAME=static-chotot-com yarn googlecloud:upload
+    - docker build --build-arg BUILD_ID=$BUILD_ID -t docker.chotot.org/$DIST_NAME:$VERSION .
+    - docker push docker.chotot.org/$DIST_NAME:$VERSION
+  tags:
+    - shell
+  only:
+    - master
+
+deploy_dev:
+  stage: deploy_dev
+  script:
+    - GITOPS_HELM_BRANCH=$(echo $CI_BUILD_REF_NAME | awk -F'-' '{print $1}' )
+    - >-
+      curl -X POST https://$DEV_GATEWAY_DOMAIN/v1/internal/helm-operator/commit -H 'Content-Type: application/json' -d '{ "file_path": "'"$GITOPS_HELM_YAML_FILE"'", "docker_image_version": "'"$VERSION"'", "branch": "'"$GITOPS_HELM_BRANCH"'" }'
+  tags:
+    - shell
+  only:
+    - /^me.*$/
+    - /^fse.*$/
+    - /^growth.*$/
+    - /^mabu.*$/
+
+deploy_uat:
+  stage: deploy_uat
+  script:
+    - GITOPS_HELM_BRANCH=$(echo $CI_BUILD_REF_NAME | awk -F'-' '{print $1}' )
+    - >-
+      curl -X POST https://$UAT_GATEWAY_DOMAIN/v1/internal/helm-operator/commit -H 'Content-Type: application/json' -d '{ "file_path": "'"$GITOPS_HELM_YAML_FILE"'", "docker_image_version": "'"$VERSION"'", "branch": "'"$GITOPS_HELM_BRANCH"'" }'
+  tags:
+    - shell
+  only:
+    - uat
+
+deploy_production:
+  stage: deploy_production
+  script:
+    - GITOPS_HELM_BRANCH="master"
+    - >-
+      curl -X POST https://gateway.chotot.com/v1/internal/helm-operator/commit -H 'Content-Type: application/json' -d '{ "file_path": "'"$GITOPS_HELM_YAML_FILE"'", "docker_image_version": "'"$VERSION"'", "branch": "'"$GITOPS_HELM_BRANCH"'" }'
+  tags:
+    - shell
+  only:
+    - master

@@ -1,0 +1,54 @@
+{
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "sourceType": "module",
+    "allowImportExportEverywhere": false,
+    "codeFrame": false
+  },
+  "extends": ["airbnb", "chotot", "chotot/next", "prettier"],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": ["src"],
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      },
+      "babel-plugin-root-import": [
+        {
+          "rootPathSuffix": "./src/",
+          "rootPathPrefix": "~app/"
+        },
+        {
+          "rootPathSuffix": "./server/",
+          "rootPathPrefix": "~server/"
+        },
+        {
+          "rootPathSuffix": "./remote-component.config.js",
+          "rootPathPrefix": "remote-component.config.js"
+        },
+        {
+          "rootPathSuffix": "./src/assets",
+          "rootPathPrefix": "~assets/"
+        }
+      ]
+    }
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "jest": true
+  },
+  "rules": {
+    "import/no-extraneous-dependencies": ["error", {"devDependencies": true, "optionalDependencies": true, "peerDependencies": true}],
+    "import/no-commonjs": ["error", { "allowConditionalRequire": true, "allowRequire": true }],
+    "prefer-promise-reject-errors": ["off"],
+    "react/jsx-filename-extension": ["off"],
+    "react/prop-types": ["warn"],
+    "react/jsx-props-no-spreading": ["error", {
+      "html": "ignore",
+      "custom": "ignore",
+      "exceptions": [""]
+    }],
+    "consistent-return": ["warn"],
+    "no-return-assign": ["off"]
+  }
+}

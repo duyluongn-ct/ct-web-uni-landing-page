@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "noImplicitAny": false,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "baseUrl": "./",
+    "paths": {
+      "~app/*": ["./src/*"],
+      "remote-component.config.js": ["remote-component.config.js"],
+      "~server/*": ["./server/*"],
+      "~page/*": ["./src/page/*"],
+      "~config/*": ["./src/config/*"],
+      "~assets/*": ["./src/assets/*"]
+    }
+  },
+  "include": ["src/"],
+  "exclude": ["node_modules", "**/node_modules/*"]
+}

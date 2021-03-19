@@ -1,0 +1,48 @@
+.wrapperOverflow {
+  position: relative;
+
+  &:hover {
+    i {
+      transform: scale(1.5) !important;
+      transition: all 0.2s ease-in-out;
+      top: 50%;
+    }
+  }
+
+  i {
+    position: absolute;
+    background: url(https://static.chotot.com/storage/default/slide-next.svg) center center
+      no-repeat;
+    background-size: 100%;
+    width: 38px;
+    height: 38px;
+    z-index: 2;
+    cursor: pointer;
+    display: none;
+    transition: all ease-in-out 0.2s;
+    outline: none;
+    user-select: none;
+
+    @media (max-width: 480px) {
+      display: none !important;
+    }
+
+    &.iconPrev {
+      top: 47%;
+      background: url(https://static.chotot.com/storage/default/slide-prev.svg) center center
+        no-repeat;
+      left: -15px;
+      z-index: 11;
+    }
+
+    &.iconNext {
+      top: 47%;
+      right: -15px;
+      z-index: 11;
+    }
+
+    &.active {
+      display: block;
+    }
+  }
+}

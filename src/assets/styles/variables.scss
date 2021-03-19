@@ -1,0 +1,99 @@
+/* ChoTot Style */
+@import './ct-variables';
+
+/* End ChoTot Style */
+
+/**
+ *  Define scss variables here.
+ *
+ *  Available options for Bootstrap:
+ *  http://getbootstrap.com/customize/
+ *  https://github.com/twbs/bootstrap-sass/blob/master/assets/stylesheets/bootstrap/_variables.scss
+ */
+
+$body-bg: #fefff5;
+$form-title: #ffcb2f;
+$font-family-verdana: Verdana, Arial, serif;
+$grey: #ccc;
+$red: #de0000;
+$primary: #fbb500;
+$ad-listing-border: 1px solid #eeeeee;
+/**
+ *  Define scss variables here.
+ *
+ *  Available options for Bootstrap:
+ *  http://getbootstrap.com/customize/
+ *
+ */
+// Custom Colors
+$listing-border: 1px solid #f4f4f4;
+$brand-select: #ffba00;
+$cyan: #33e0ff;
+$humility: #777;
+$red: #c90927;
+$container-bg: #fff;
+$container-border-color: #e5e5e5;
+$light-background-color: #eeeeee;
+// Bootstrap Variables
+$brand-primary: #fe9900;
+$brand-primary-light: #fdce09;
+$brand-secondary: #e25139;
+$brand-success: #33a837;
+$brand-warning: #f0ad4e;
+$brand-danger: #d9534f;
+$brand-info: #5bc0de;
+$brand-boder: #fff2b5;
+//$btn-default-border: $brand-success;
+// Layout
+$chat-thread-size: 5;
+$chat-message-size: 7;
+$text-color: #333;
+$font-size-base: 14px;
+$font-family-sans-serif: Verdana, Arial, sans-serif;
+$font-family-serif: Verdana, Arial, serif;
+//$navbar-default-bg: #FFF7D0;
+//$navbar-default-bg1: #FFF2B5;
+//$navbar-default-color: $text-color;
+//$navbar-default-link-color: $text-color;
+//$navbar-default-link-hover-color: $brand-primary;
+//$navbar-default-link-active-color: $brand-primary;
+$body-bg: #f4f4f4;
+$border-color: #cacaca; // old: #ebebeb;
+$font-adlsiting: 'Verdana';
+
+$fixed-top-line-height: 30px; // must be synced with FIXED_TOP_LINE_HEIGHT
+
+// Footer
+$footer-link-color: #333;
+$footer-bg-color: #fff2b5;
+$footer-height: 70px;
+
+// Extra small screen / phone
+//** Deprecated `$screen-xs` as of v3.0.1
+$screen-xs: 480px !default;
+//** Deprecated `$screen-xs-min` as of v3.2.0
+$screen-xs-min: $screen-xs !default;
+//** Deprecated `$screen-phone` as of v3.0.1
+$screen-phone: $screen-xs-min !default;
+// Small screen / tablet
+//** Deprecated `$screen-sm` as of v3.0.1
+$screen-sm: 768px !default;
+$screen-sm-min: $screen-sm !default;
+//** Deprecated `$screen-tablet` as of v3.0.1
+$screen-tablet: $screen-sm-min !default;
+// Medium screen / desktop
+//** Deprecated `$screen-md` as of v3.0.1
+$screen-md: 992px !default;
+$screen-md-min: $screen-md !default;
+//** Deprecated `$screen-desktop` as of v3.0.1
+$screen-desktop: $screen-md-min !default;
+// Large screen / wide desktop
+//** Deprecated `$screen-lg` as of v3.0.1
+$screen-lg: 1200px !default;
+$screen-lg-min: $screen-lg !default;
+//** Deprecated `$screen-lg-desktop` as of v3.0.1
+$screen-lg-desktop: $screen-lg-min !default;
+// So media queries don't overlap when required, provide a maximum
+$screen-xs-max: ($screen-sm-min - 1) !default;
+$screen-sm-max: ($screen-md-min - 1) !default;
+$screen-md-max: ($screen-lg-min - 1) !default;

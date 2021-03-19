@@ -1,0 +1,17 @@
+# Don't check auto-generated stuff into git
+.next
+node_modules
+bundles/
+build
+# Cruft
+.DS_Store
+.idea
+.yalc
+yalc.lock
+.vscode
+*.map
+*.log
+*.env
+*.env.*
+BUILD_ID
+buildid.json

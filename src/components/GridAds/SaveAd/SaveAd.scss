@@ -1,0 +1,35 @@
+.saveAdWrapper {
+  position: absolute;
+  right: 8px;
+  bottom: 5px;
+  .btnSavedAd {
+    padding: 0;
+    background: transparent;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .btnSavedAdFull {
+    @extend .btnSavedAd;
+    border: 1px solid #c90927;
+    border-radius: 20px;
+    padding: 5px 10px;
+    font-size: 12px;
+    color: #c90927;
+  }
+}
+.saveAdViewDetail {
+  background: transparent;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  border: 1px solid #c90927;
+  border-radius: 20px;
+  padding: 5px 10px 0px 10px;
+  color: #c90927;
+  display: flex;
+}

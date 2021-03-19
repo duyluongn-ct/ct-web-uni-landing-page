@@ -1,0 +1,54 @@
+$desktop-width: 768px;
+$mobile-width: $desktop-width - 1;
+
+@mixin respond-to($media) {
+  @if $media == desktop {
+    @media only screen and (min-width: $desktop-width) {
+      @content;
+    }
+  }
+  @elseif $media == desktop9601024 {
+    @media only screen and (min-width: 960px) and (max-width: 1024px) {
+      @content;
+    }
+  }
+  @elseif $media == desktop768 {
+    @media only screen and (min-width: 768px) and (max-width: 959px) {
+      @content;
+    }
+  }
+  @elseif $media == mobile480 {
+    @media only screen and (min-width: 481px) and (max-width: 768px) {
+      @content;
+    }
+  }
+  @elseif $media == mobile320 {
+    @media only screen and (min-width: 320px) and (max-width: 480px) {
+      @content;
+    }
+  }
+  @elseif $media == mobile320360 {
+    @media only screen and (min-width: 320px) and (max-width: 359px) {
+      @content;
+    }
+  }
+  @elseif $media == mobile320380 {
+    @media only screen and (min-width: 320px) and (max-width: 380px) {
+      @content;
+    }
+  }
+  @elseif $media == mobilePortrait {
+    @media only screen and (min-width: 320px) and (max-width: 767px) and (orientation: portrait) {
+      @content;
+    }
+  }
+  @elseif $media == mobileLandscape {
+    @media only screen and (min-width: 320px) and (max-width: 767px) and (orientation: landscape) {
+      @content;
+    }
+  } @else {
+    @media only screen and (max-width: $mobile-width) {
+      @content;
+    }
+  }
+}

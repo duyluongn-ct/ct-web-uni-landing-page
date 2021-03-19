@@ -1,0 +1,6 @@
+BASE_DOMAIN=org
+PORT=4000
+GTM_CONTAINERID=GTM-5CM4FKS
+NODE_ENV=development
+ENV=development
+SENTRY_DNS=https://2fc0840ce3604ac2ae28a62ad95ccedf@sentry.chotot.org/12
