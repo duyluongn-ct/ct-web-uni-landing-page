@@ -32,6 +32,8 @@ const Section = styled.div`
   margin-bottom: 12px;
   max-width: 960px;
   position: relative;
+  background: url('https://static.chotot.com/storage/default_images/landing/section.jpg') no-repeat;
+  background-size: cover;
   align-items: center;
   background-color: #fff;
 

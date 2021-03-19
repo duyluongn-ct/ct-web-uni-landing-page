@@ -99,7 +99,7 @@ export const catData = [
     largeText: 'QUẢNG NAM ĐÀ NẴNG',
   },
   {
-    img: 'https://static.chotot.com/storage/default_images/landing/cantho.jpg',
+    img: 'https://static.chotot.com/storage/default_images/landing/cantho-new.jpg',
     icon: 'https://static.chotot.com/storage/default_images/landing/shape.svg',
     link: 'https://nha.chotot.com/can-tho/mua-ban-bat-dong-san',
     smallText: 'BẤT ĐỘNG SẢN',

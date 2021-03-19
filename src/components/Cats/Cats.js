@@ -51,7 +51,7 @@ const CatInfo = styled.div`
   display: flex;
   width: 62%;
   margin: 0 auto;
-  margin-top: 15%;
+  margin-top: 12%;
   text-align: center;
   vertical-align: middle;
   ${mediaBreakPointDown(

@@ -49,7 +49,7 @@ async function googleCloudUploader() {
     }
 
     async function onComplete() {
-      const directory = `MARKET_PRICE_${env}`;
+      const directory = `LANDING_PAGE_${env}`;
       const resp = await Promise.all(
         fileList.map((filePath) => {
           let destination = path.relative(pathDirName, filePath);

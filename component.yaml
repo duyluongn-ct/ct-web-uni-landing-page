@@ -2,7 +2,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   # Service name
-  name: new-pty-home-page
+  name: landing-page
 
   # Short text description of service or resource,
   # can support English and Vietnamese
