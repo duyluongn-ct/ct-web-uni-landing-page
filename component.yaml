@@ -56,7 +56,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   # Service name
-  name: market-price
+  name: landing-page
 
   # Short text description of service or resource,
   # can support English and Vietnamese
@@ -77,10 +77,10 @@ metadata:
 
     # Chart path in gitops-helm
     # e.g. `app-backend/backstage-backend.yaml`
-    HelmChart: app-web/market-price.yaml
+    HelmChart: app-web/landing-page.yaml
 
     # App name of Grafana dashboard
-    Grafana: market-price
+    Grafana: landing-page
     # Service name of Grafana dashboard
     # Project name of Grafana dashboard
 

@@ -22,7 +22,7 @@ export const LOAD_DEEP_LINK_RESOVLER_FAIL = 'nav/LOAD_DEEP_LINK_RESOVLER_FAIL';
 export const getConfigs = () => ({
   types: [GET_CONFIG, GET_CONFIG_SUCCESS, GET_CONFIG_FAIL],
   promise: async () => {
-    const url = `${config.gatewayUrl}/v1/public/chapy-pro/market-price-index-conf`;
+    const url = `${config.gatewayUrl}/v1/public/chapy-pro/landing-page-index-conf`;
     return new Promise((resolve, reject) => {
       fetch(url)
         .then((data) => data.json())
@@ -297,6 +297,22 @@ export function getTotalBlog() {
   });
 }
 
+export function getAds({ cg = 1010 }) {
+  const url = `${config.gatewayUrl}/v1/public/ad-listing?cg=${cg}&st=s,k&limit=10&key_param_included=true`;
+
+  return new Promise((resolve) => {
+    fetch(url)
+      .then((data) => data.json())
+      .then((result) => {
+        result.isDone = true;
+        return resolve(result);
+      })
+      .catch(() => {
+        return resolve([]);
+      });
+  });
+}
+
 export function getAdsRecommend({ authenticated = false, account_id: accountId }) {
   let fingerPrint = Cookies.get('ctfp');
   if (authenticated) {
@@ -318,7 +334,7 @@ export function getAdsRecommend({ authenticated = false, account_id: accountId }
 }
 
 export function getChartData(cat, region) {
-  const url = `${config.gatewayUrl}/v1/public/pty-market-price/chart?cg=${cat.value}&region=${region.regionValue}&area=${region.subRegionValue}`;
+  const url = `${config.gatewayUrl}/v1/public/pty-landing-page/chart?cg=${cat.value}&region=${region.regionValue}&area=${region.subRegionValue}`;
 
   return new Promise((resolve) => {
     fetch(url)

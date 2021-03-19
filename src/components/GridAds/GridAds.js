@@ -12,6 +12,7 @@ import styles from './styles.scss';
 
 const Wrapper = styled.div`
   background: #ffffff;
+  margin-bottom: 12px;
 
   ${mediaBreakPointDown(
     'md',
@@ -83,6 +84,13 @@ const Grid = styled.div`
   )};
 `;
 
+const ImgTitle = styled.div`
+  height: 52px;
+  background: url(${({ src }) => (src ? src : '')}) no-repeat;
+  background-size: 100% 100%;
+  margin-bottom: 12px;
+`;
+
 const Title = styled.h2`
   font-size: 17px;
   font-weight: bold;
@@ -104,6 +112,8 @@ const Title = styled.h2`
 `;
 
 const GridAds = ({
+  isMobile,
+  imgTitle,
   title,
   type,
   // region,
@@ -141,7 +151,8 @@ const GridAds = ({
 
   return isDone === true && listAdsHtml.length === 0 ? null : (
     <Wrapper>
-      <Title>{title}</Title>
+      {imgTitle && <ImgTitle src={isMobile ? imgTitle[1] : imgTitle[0]} />}
+      {title && title !== '' && <Title>{title}</Title>}
       <WrapperScroll total={listAdsHtml.length} cols={4.6} className={styles.oneRowContent}>
         <Grid>
           {listAdsHtml.length === 0

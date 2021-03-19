@@ -1,23 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
-import Cookies from 'cookies-js';
 import { useSelector } from 'react-redux';
+import Cookies from 'cookies-js';
 import styled from 'styled-components';
-import Regions from '~app/components/Regions';
 import Keywords from '~app/components/Keywords';
 import Description from '~app/components/Description';
-import { mediaBreakPointDown, mediaBreakPointUp } from '~app/utils/breakpoint';
-import gtmTracking from '~app/utils/gtmTracking';
-import { isClient, getParentCategory } from '~app/utils';
+import { mediaBreakPointDown } from '~app/utils/breakpoint';
+import gtmTracking, { gtmTrackingWithRegion } from '~app/utils/gtmTracking';
+import { getAds } from '~app/containers/Home/actions';
+import GridAds from '~app/components/GridAds/GridAds';
 import { config } from '~app/config';
-import { getConfigs, setArea, setCategory, setRegion } from '~app/containers/Home/actions';
-import { BreadCrumb } from '~app/components/BreadCrumb/BreadCrumb';
-import Style from '~app/pages/styles.scss';
-import { Banner } from '~app/components/Banner/Banner';
-import MainSection from '~app/components/MainSection';
-import FilterListing from '~app/components/FilterListing';
-import Modal from '~app/components/Modal';
-import { pushRouter } from '~app/utils/routes';
+import SnackBar from '~app/components/SnackBar/SnackBar';
+import { resetMessage } from '~app/components/GridAds/SaveAd/action';
+import { Cats } from '~app/components/Cats/Cats';
+import { catData, typeData } from './constants';
 
 const WrapperHome = styled.div`
   margin: 0 auto;
@@ -30,77 +26,43 @@ const WrapperHome = styled.div`
   )};
 `;
 
-const WrapperBanner = styled.div`
-  text-align: center;
-  position: relative;
+const Section = styled.div`
+  margin: 0 auto;
+  padding: 12px;
   margin-bottom: 12px;
+  max-width: 960px;
+  position: relative;
+  align-items: center;
   background-color: #fff;
-  min-height: calc(100vw * 0.362);
-  ${mediaBreakPointUp(
-    'ltmd',
-    `
-      min-height: 150px;
-    `
-  )};
+
+  p {
+    text-align: center;
+  }
+
+  .text {
+    font-family: Helvetica;
+    font-size: 24px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 14px;
+    letter-spacing: normal;
+    color: #9b9b9b;
+  }
 `;
 
 const ContainerBanner = styled.div`
   margin: 0 auto;
   max-width: 960px;
-
-  ${mediaBreakPointUp(
-    'md',
-    `
-        padding: 12px;
-      `
-  )};
-
-  ${mediaBreakPointDown(
-    'sm',
-    `
-    padding: 0 !important;
-  `
-  )};
+  position: relative;
 `;
 
-const RewardWrapper = styled.div`
-  position: fixed;
-  right: 0;
-  bottom: 60px;
-  z-index: 999;
-
-  img {
-    height: 120px;
-
-    ${mediaBreakPointDown(
-      'ltmd',
-      `
-      height: 80px;
-    `
-    )};
-  }
-`;
-
-const CloseButton = styled.div`
+const Gradient = styled.div`
   position: absolute;
-  top: 0px;
-  right: 0px;
-  width: 40px;
-  height: 40px;
-
-  .icon {
-    margin: 10px auto;
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-    text-align: center;
-    font-weight: 600;
-    font-size: 15px;
-    border-radius: 10px;
-    background-color: #111;
-    color: #fff;
-    box-shadow: 0px 0px 10px 2px grey;
-  }
+  height: 113px;
+  width: 100%;
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), #ffffff);
+  bottom: 0;
 `;
 
 const Row = styled.div`
@@ -109,131 +71,108 @@ const Row = styled.div`
   }
 `;
 
+const Btn = styled.a`
+  height: 30px;
+  text-align: center;
+  text-transform: uppercase;
+  background: #fc9807;
+  color: #fff;
+  font-size: 14px;
+  font-stretch: normal;
+  font-style: normal;
+  font-weight: bold;
+  line-height: 0.33;
+  letter-spacing: normal;
+  border-radius: 4px;
+  padding: 9.5px 30px;
+  text-decoration: none;
+  border: none;
+`;
+
 const Container = styled.div`
   padding: 32px 12px 12px 12px;
   /* background-color: #fff; */
 `;
 
-const BannerDesktopWrapper = styled.div`
-  display: block;
-`;
-
-const Home = ({
-  // isMobile,
-  seo: { seoData, keywords },
-  dispatch,
-  config: { rewardEnable, rewardHomepage },
-}) => {
-  const [rewardIconCookie, showRewardIconCookie] = useState(false);
-  const [step, setStep] = useState(1);
-  const [listAreas, setListAreas] = useState([]);
-  const [listRegions, setListRegions] = useState([]);
-  const [isShowCity, showCity] = useState(false);
-  const [isShowArea, showArea] = useState(false);
-  const [isShowCat, showCat] = useState(false);
-  const configs = useSelector((state) => state.marketPrice?.configs);
-  const region = useSelector((state) => state.marketPrice?.region);
-  const area = useSelector((state) => state.marketPrice?.area);
-  const category = useSelector((state) => state.marketPrice?.category);
-  const regions = useSelector((state) => state.regions);
+const Home = ({ isMobile, auth, seo: { seoData, keywords }, dispatch }) => {
+  const [isDone, setIsDone] = useState({
+    isDoneAdCat1: false,
+    isDoneAdCat2: false,
+    isDoneAdCat3: false,
+  });
+  const [ads, setAds] = useState({
+    adCat1: [],
+    adCat2: [],
+    adCat3: [],
+  });
+  const [region, setRegion] = useState({
+    regionValue: 0,
+    regionUrl: 'toan-quoc',
+    regionName: 'Toàn quốc',
+    subRegionValue: 0,
+    subRegionUrl: '',
+    subRegionName: 'Tất cả',
+  });
   const categories = useSelector((state) => state.categories);
+  const { categoriesFollowId: allCategoriesFollowId } = categories;
+
+  const saveAdMessage = useSelector((state) => state.savedAd.message);
+  const mappingFeaturesAdData = useSelector((state) => state.adFeature.mapping);
 
   useEffect(() => {
-    (async () => {
-      const res = await dispatch(getConfigs());
+    let regionLocation = Cookies.get('regionParams');
+    if (!regionLocation) {
+      regionLocation = {
+        regionValue: 0,
+        regionUrl: 'toan-quoc',
+        regionName: 'Toàn quốc',
+        subRegionValue: 0,
+        subRegionUrl: '',
+        subRegionName: '',
+        wardValue: 0,
+        wardName: '',
+        wardUrl: '',
+      };
+    } else {
+      regionLocation = JSON.parse(regionLocation);
+    }
 
-      const tempRegions = [];
-      let itemRegion = {};
-      res.result.regions.forEach((elm, index) => {
-        // eslint-disable-next-line prefer-destructuring
-        itemRegion.id = Object.keys(elm)[0];
-        itemRegion.name = elm[Object.keys(elm)[0]].name;
-        itemRegion.area = elm[Object.keys(elm)[0]].area;
-        tempRegions[index] = itemRegion;
-        itemRegion = {};
+    async function fetchMyAPI() {
+      const [
+        { ads: adCat1 = [], isDone: isDoneAdCat1 = true },
+        { ads: adCat2 = [], isDone: isDoneAdCat2 = true },
+        { ads: adCat3 = [], isDone: isDoneAdCat3 = true },
+      ] = await Promise.all([getAds({ cg: 1040 }), getAds({ cg: 1010 }), getAds({ cg: 1020 })]);
+
+      setIsDone({
+        isDoneAdCat1,
+        isDoneAdCat2,
+        isDoneAdCat3,
       });
-      setListRegions(tempRegions);
-    })();
-  }, []);
-
-  const handleRegionClick = (item) => {
-    // gtmTracking('browse_by_highlight_category', item.text, 'click_pty_type');
-    pushRouter(item.link);
-  };
+      const adsList = {
+        ...ads,
+        adCat1,
+        adCat2,
+        adCat3,
+      };
+      setAds({ ...adsList });
+      setRegion(regionLocation);
+    }
+    if (auth?.loaded) {
+      fetchMyAPI();
+    }
+  }, [auth?.loaded]);
 
   const handlePopularKeywordClick = (item) => {
     gtmTracking('popular_keywords', item.title.replace(/\s+/g, '_').toLowerCase());
   };
 
-  const handleRewardIconHide = () => {
-    Cookies.set('hideRewardIcon', true);
-    showRewardIconCookie(false);
+  const handleClickAdView = (labelT, categoryT, action = 'click_ad') => {
+    gtmTrackingWithRegion(categoryT, labelT, action);
   };
 
-  const handleShow = (index) => {
-    switch (index) {
-      case 1:
-        showCity(!isShowCity);
-        break;
-      case 2:
-        showArea(!isShowArea);
-        break;
-      case 3:
-        showCat(!isShowCat);
-        break;
-
-      default:
-        break;
-    }
-  };
-
-  const handleSelectRegion = (item) => {
-    showCity(!isShowCity);
-    setStep(2);
-    const tempAreas = [];
-    let itemArea = {};
-    item.area.forEach((areaE) => {
-      // eslint-disable-next-line prefer-destructuring
-      itemArea.id = Object.keys(areaE)[0];
-      itemArea.name = areaE[itemArea.id];
-      tempAreas.push(itemArea);
-      itemArea = {};
-    });
-    setListAreas(tempAreas);
-    dispatch(setRegion(item));
-  };
-
-  const handleSelectSubRegion = (item) => {
-    showArea(!isShowArea);
-    setStep(3);
-    dispatch(setArea(item));
-  };
-
-  const handleSelectCat = (item) => {
-    showCat(!isShowCat);
-    dispatch(setCategory(item));
-  };
-
-  const handleSubmit = () => {
-    let catId = category.id;
-    if (!catId) {
-      catId = 1020;
-    }
-    if (region.id && area.id && catId) {
-      const { regionsFollowId = {} } = regions;
-      const { allCategoriesFollowId = {} } = categories;
-      const regionName = regionsFollowId ? regionsFollowId[region.id].name_url : '';
-      const subRegionName = regionsFollowId
-        ? regionsFollowId[region.id].area[area.id].name_url
-        : '';
-
-      const parentId = getParentCategory(catId);
-      const subCategory = allCategoriesFollowId.entities
-        ? allCategoriesFollowId.entities[parentId].subCategories.entities[catId]
-        : {};
-
-      pushRouter(`/tham-khao-gia/${regionName}/${subRegionName}/${subCategory.name_url}`);
-    }
+  const handleClickLoadMore = (labelT, categoryT) => {
+    gtmTrackingWithRegion(categoryT, labelT, 'click_see_more');
   };
 
   return (
@@ -245,79 +184,101 @@ const Home = ({
         ))}
       </Head>
 
-      <WrapperBanner>
-        <ContainerBanner>
-          <BannerDesktopWrapper>
-            <BreadCrumb />
-            <div className={Style.wrapper + ' ' + Style.title}>
-              <h1 itemProp="name" className="title heading1">
-                Tham khảo giá Bất Động Sản
-              </h1>
-            </div>
-            <Banner />
-          </BannerDesktopWrapper>
-        </ContainerBanner>
-      </WrapperBanner>
-
       <WrapperHome>
-        <MainSection
-          onClick={handleShow}
-          onSubmit={handleSubmit}
-          step={step}
+        <ContainerBanner>
+          <img
+            width="100%"
+            alt="Chương trình ưu đãi"
+            src="https://static.chotot.com/storage/default_images/landing/banner-landing.jpg"
+          />
+          <Gradient />
+        </ContainerBanner>
+
+        <Cats data={catData} border={false} isMobile={isMobile} />
+
+        <Section>
+          <p>
+            <img
+              height="67px"
+              alt="Chương trình ưu đãi"
+              src="https://static.chotot.com/storage/default_images/landing/countdown.jpg"
+            />
+          </p>
+          <p className="text large-text">Tin mới mỗi ngày</p>
+          <p>
+            <Btn href={`${config.propertyURL}/${region.regionUrl}/mua-ban-bat-dong-san`}>
+              XEM NGAY
+            </Btn>
+          </p>
+        </Section>
+
+        <GridAds
+          key="adCat1"
+          type="adCat1"
+          isMobile={isMobile}
+          isDone={isDone.isDoneAdCat1}
+          imgTitle={[
+            'https://static.chotot.com/storage/default_images/landing/cat-1.jpg',
+            'https://static.chotot.com/storage/default_images/landing/type-1-m.jpg',
+          ]}
+          title=""
+          link={`${config.propertyURL}/${region.regionUrl}/mua-ban-dat`}
           region={region}
-          area={area}
-          category={category}
-        />
-        {configs?.regions.map((regionE) => {
-          return (
-            <Regions
-              region={regionE}
-              regionsFollowId={regions?.regionsFollowId}
-              onClick={handleRegionClick}
-            />
-          );
-        })}
-
-        <Modal
-          isShow={isShowCity}
-          onClose={() => handleShow(1)}
-          // showBackButton={isSubSelectOpen}
-          // onBack={() => setSubSelectOpen(false)}
-          title="Chọn Tỉnh/ Thành"
-          Body={
-            <FilterListing
-              list={listRegions}
-              onSelectItem={(selectedItem) => handleSelectRegion(selectedItem)}
-            />
-          }
+          ads={ads.adCat1}
+          total={0}
+          mappingFeaturesAdData={mappingFeaturesAdData}
+          allCategoriesFollowId={allCategoriesFollowId}
+          handleClickAdView={handleClickAdView}
+          handleClickLoadMore={handleClickLoadMore}
         />
 
-        <Modal
-          isShow={isShowArea}
-          onClose={() => handleShow(2)}
-          // showBackButton={isSubSelectOpen}
-          // onBack={() => setSubSelectOpen(false)}
-          title="Chọn Quận/ Huyện"
-          Body={
-            <FilterListing
-              list={listAreas}
-              onSelectItem={(selectedItem) => handleSelectSubRegion(selectedItem)}
-            />
-          }
+        <GridAds
+          key="adCat2"
+          type="adCat2"
+          isMobile={isMobile}
+          isDone={isDone.isDoneAdCat2}
+          imgTitle={[
+            'https://static.chotot.com/storage/default_images/landing/cat-2.jpg',
+            'https://static.chotot.com/storage/default_images/landing/type-2-m.jpg',
+          ]}
+          title=""
+          link={`${config.propertyURL}/${region.regionUrl}/mua-ban-can-ho-chung-cu`}
+          region={region}
+          ads={ads.adCat2}
+          total={0}
+          mappingFeaturesAdData={mappingFeaturesAdData}
+          allCategoriesFollowId={allCategoriesFollowId}
+          handleClickAdView={handleClickAdView}
+          handleClickLoadMore={handleClickLoadMore}
         />
 
-        <Modal
-          isShow={isShowCat}
-          onClose={() => handleShow(3)}
-          // showBackButton={isSubSelectOpen}
-          // onBack={() => setSubSelectOpen(false)}
-          title="Chọn loại BĐS"
-          Body={
-            <FilterListing
-              list={configs.categories[0] && configs.categories[0].subcategories}
-              onSelectItem={(selectedItem) => handleSelectCat(selectedItem)}
-            />
-          }
+        <GridAds
+          key="adCat3"
+          type="adCat3"
+          isMobile={isMobile}
+          isDone={isDone.isDoneAdCat3}
+          imgTitle={[
+            'https://static.chotot.com/storage/default_images/landing/cat-3.jpg',
+            'https://static.chotot.com/storage/default_images/landing/type-3-m.jpg',
+          ]}
+          title=""
+          link={`${config.propertyURL}/${region.regionUrl}/mua-ban-dat`}
+          region={region}
+          ads={ads.adCat3}
+          total={0}
+          mappingFeaturesAdData={mappingFeaturesAdData}
+          allCategoriesFollowId={allCategoriesFollowId}
+          handleClickAdView={handleClickAdView}
+          handleClickLoadMore={handleClickLoadMore}
+        />
+
+        <Cats
+          data={typeData}
+          isMobile={isMobile}
+          imgTitle={[
+            'https://static.chotot.com/storage/default_images/landing/cat-4.jpg',
+            'https://static.chotot.com/storage/default_images/landing/type-4-m.jpg',
+          ]}
         />
 
         {seoData.catDescription && (
@@ -333,15 +294,8 @@ const Home = ({
             )}
           </Container>
         )}
-        {isClient && rewardIconCookie && rewardEnable && (
-          <RewardWrapper>
-            <a href={`${config.baseURL}/uu-dai/tat-ca?xtatc=INT-1-[Cho-Tot-Rewards-homepage]`}>
-              <img src={rewardHomepage} alt="uu dai cho tot" />
-            </a>
-            <CloseButton onClick={() => handleRewardIconHide()}>
-              <div className="icon">×</div>
-            </CloseButton>
-          </RewardWrapper>
+        {saveAdMessage && (
+          <SnackBar hideCallBack={() => dispatch(resetMessage())} message={saveAdMessage} />
         )}
       </WrapperHome>
     </>
