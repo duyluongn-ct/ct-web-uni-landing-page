@@ -73,23 +73,23 @@ const Row = styled.div`
   }
 `;
 
-const Btn = styled.a`
-  height: 30px;
-  text-align: center;
-  text-transform: uppercase;
-  background: #fc9807;
-  color: #fff;
-  font-size: 14px;
-  font-stretch: normal;
-  font-style: normal;
-  font-weight: bold;
-  line-height: 0.33;
-  letter-spacing: normal;
-  border-radius: 4px;
-  padding: 9.5px 30px;
-  text-decoration: none;
-  border: none;
-`;
+// const Btn = styled.a`
+//   height: 30px;
+//   text-align: center;
+//   text-transform: uppercase;
+//   background: #fc9807;
+//   color: #fff;
+//   font-size: 14px;
+//   font-stretch: normal;
+//   font-style: normal;
+//   font-weight: bold;
+//   line-height: 0.33;
+//   letter-spacing: normal;
+//   border-radius: 4px;
+//   padding: 9.5px 30px;
+//   text-decoration: none;
+//   border: none;
+// `;
 
 const Container = styled.div`
   padding: 32px 12px 12px 12px;
@@ -199,19 +199,13 @@ const Home = ({ isMobile, auth, seo: { seoData, keywords }, dispatch }) => {
         <Cats data={catData} border={false} isMobile={isMobile} />
 
         <Section>
-          <p>
+          <a href={`${config.propertyURL}/${region.regionUrl}/mua-ban-bat-dong-san`}>
             <img
-              height="67px"
+              width="100%"
               alt="Chương trình ưu đãi"
-              src="https://static.chotot.com/storage/default_images/landing/countdown.jpg"
+              src="https://static.chotot.com/storage/default_images/landing/countdown-1.jpg"
             />
-          </p>
-          <p className="text large-text">Tin mới mỗi ngày</p>
-          <p>
-            <Btn href={`${config.propertyURL}/${region.regionUrl}/mua-ban-bat-dong-san`}>
-              XEM NGAY
-            </Btn>
-          </p>
+          </a>
         </Section>
 
         <GridAds
