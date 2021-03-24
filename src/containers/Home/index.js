@@ -13,7 +13,6 @@ import { config } from '~app/config';
 import SnackBar from '~app/components/SnackBar/SnackBar';
 import { resetMessage } from '~app/components/GridAds/SaveAd/action';
 import { Cats } from '~app/components/Cats/Cats';
-import { catData, typeData } from './constants';
 
 const WrapperHome = styled.div`
   margin: 0 auto;
@@ -96,7 +95,7 @@ const Container = styled.div`
   /* background-color: #fff; */
 `;
 
-const Home = ({ isMobile, auth, seo: { seoData, keywords }, dispatch }) => {
+const Home = ({ isMobile, auth, blocks = [], seo: { seoData, keywords }, dispatch }) => {
   const [isDone, setIsDone] = useState({
     isDoneAdCat1: false,
     isDoneAdCat2: false,
@@ -187,95 +186,72 @@ const Home = ({ isMobile, auth, seo: { seoData, keywords }, dispatch }) => {
       </Head>
 
       <WrapperHome>
-        <ContainerBanner>
-          <img
-            width="100%"
-            alt="Chương trình ưu đãi"
-            src="https://static.chotot.com/storage/default_images/landing/banner-landing.jpg"
-          />
-          <Gradient />
-        </ContainerBanner>
+        {blocks.map((block) => {
+          let sec = null;
+          switch (block.type) {
+            case 'banner':
+              sec = (
+                <ContainerBanner key={`sec-${block.id}`}>
+                  <img
+                    width="100%"
+                    alt="Chương trình ưu đãi"
+                    src="https://static.chotot.com/storage/default_images/landing/banner-landing.jpg"
+                  />
+                  <Gradient />
+                </ContainerBanner>
+              );
+              break;
+            case 'shortcut':
+              sec = (
+                <Cats
+                  key={`sec-${block.id}`}
+                  data={block.shortcut}
+                  border={false}
+                  isMobile={isMobile}
+                />
+              );
+              break;
+            case 'linked-image':
+              sec = (
+                <Section key={`sec-${block.id}`}>
+                  <a href={`${block.link}`}>
+                    <img width="100%" alt="Chương trình ưu đãi" src={block.linkImage} />
+                  </a>
+                </Section>
+              );
+              break;
+            case 'filtered-ads':
+              sec = (
+                <GridAds
+                  key={`sec-${block.id}`}
+                  type="adCat1"
+                  isMobile={isMobile}
+                  isDone={isDone.isDoneAdCat1}
+                  imgTitle={[
+                    block.headerBg,
+                    block.headerBgMobile
+                      ? block.headerBgMobile
+                      : 'https://static.chotot.com/storage/default_images/landing/type-1-m.jpg',
+                  ]}
+                  title=""
+                  urlApi={block.filterAd}
+                  link={`${config.propertyURL}/${region.regionUrl}/mua-ban-dat`}
+                  region={region}
+                  ads={ads.adCat1}
+                  total={0}
+                  mappingFeaturesAdData={mappingFeaturesAdData}
+                  allCategoriesFollowId={allCategoriesFollowId}
+                  handleClickAdView={handleClickAdView}
+                  handleClickLoadMore={handleClickLoadMore}
+                />
+              );
+              break;
 
-        <Cats data={catData} border={false} isMobile={isMobile} />
-
-        <Section>
-          <a href={`${config.propertyURL}/${region.regionUrl}/mua-ban-bat-dong-san`}>
-            <img
-              width="100%"
-              alt="Chương trình ưu đãi"
-              src="https://static.chotot.com/storage/default_images/landing/countdown-1.jpg"
-            />
-          </a>
-        </Section>
-
-        <GridAds
-          key="adCat1"
-          type="adCat1"
-          isMobile={isMobile}
-          isDone={isDone.isDoneAdCat1}
-          imgTitle={[
-            'https://static.chotot.com/storage/default_images/landing/cat-1.jpg',
-            'https://static.chotot.com/storage/default_images/landing/type-1-m.jpg',
-          ]}
-          title=""
-          link={`${config.propertyURL}/${region.regionUrl}/mua-ban-dat`}
-          region={region}
-          ads={ads.adCat1}
-          total={0}
-          mappingFeaturesAdData={mappingFeaturesAdData}
-          allCategoriesFollowId={allCategoriesFollowId}
-          handleClickAdView={handleClickAdView}
-          handleClickLoadMore={handleClickLoadMore}
-        />
-
-        <GridAds
-          key="adCat2"
-          type="adCat2"
-          isMobile={isMobile}
-          isDone={isDone.isDoneAdCat2}
-          imgTitle={[
-            'https://static.chotot.com/storage/default_images/landing/cat-2.jpg',
-            'https://static.chotot.com/storage/default_images/landing/type-2-m.jpg',
-          ]}
-          title=""
-          link={`${config.propertyURL}/${region.regionUrl}/mua-ban-can-ho-chung-cu`}
-          region={region}
-          ads={ads.adCat2}
-          total={0}
-          mappingFeaturesAdData={mappingFeaturesAdData}
-          allCategoriesFollowId={allCategoriesFollowId}
-          handleClickAdView={handleClickAdView}
-          handleClickLoadMore={handleClickLoadMore}
-        />
-
-        <GridAds
-          key="adCat3"
-          type="adCat3"
-          isMobile={isMobile}
-          isDone={isDone.isDoneAdCat3}
-          imgTitle={[
-            'https://static.chotot.com/storage/default_images/landing/cat-3.jpg',
-            'https://static.chotot.com/storage/default_images/landing/type-3-m.jpg',
-          ]}
-          title=""
-          link={`${config.propertyURL}/${region.regionUrl}/mua-ban-dat`}
-          region={region}
-          ads={ads.adCat3}
-          total={0}
-          mappingFeaturesAdData={mappingFeaturesAdData}
-          allCategoriesFollowId={allCategoriesFollowId}
-          handleClickAdView={handleClickAdView}
-          handleClickLoadMore={handleClickLoadMore}
-        />
-
-        <Cats
-          data={typeData}
-          isMobile={isMobile}
-          imgTitle={[
-            'https://static.chotot.com/storage/default_images/landing/cat-4.jpg',
-            'https://static.chotot.com/storage/default_images/landing/type-4-m.jpg',
-          ]}
-        />
+            default:
+              break;
+          }
+          return sec;
+        })}
 
         {seoData.catDescription && (
           <Container>

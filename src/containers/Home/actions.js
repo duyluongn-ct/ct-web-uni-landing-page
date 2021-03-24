@@ -297,8 +297,8 @@ export function getTotalBlog() {
   });
 }
 
-export function getAds({ cg = 1010 }) {
-  const url = `${config.gatewayUrl}/v1/public/ad-listing?cg=${cg}&st=s,k&limit=10&key_param_included=true`;
+export function getAds(url) {
+  // const url = `${config.gatewayUrl}/v1/public/ad-listing?cg=${cg}&st=s,k&limit=10&key_param_included=true`;
 
   return new Promise((resolve) => {
     fetch(url)
@@ -364,3 +364,18 @@ export function getTotalCount(type, cat, region) {
       });
   });
 }
+
+export const getBlocks = () => {
+  const url = `https://www.chotot.org/landing-page-admin/config/`;
+
+  return new Promise((resolve) => {
+    fetch(url)
+      .then((data) => data.json())
+      .then((result) => {
+        return resolve(result);
+      })
+      .catch(() => {
+        return resolve([]);
+      });
+  });
+};

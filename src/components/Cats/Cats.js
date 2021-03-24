@@ -135,7 +135,7 @@ export const Cats = ({ isMobile, data = {}, imgTitle, title, border = true }) =>
       <CatSelectList border={border}>
         {data.map((item) => {
           return (
-            <Cat src={item.img} href={item.link}>
+            <Cat key={`item-${item.id}`} src={item.dataImage} href={item.link}>
               {/* <CatInfo>
                 <a className="link" href={item.link}>
                   <img alt={item.largeText} src={item.icon} />

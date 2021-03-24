@@ -12,6 +12,7 @@ import '~assets/vis.css';
 import { pushPageMetadata } from '~app/utils/gtmTracking';
 import { getChapyConfig } from '~app/modules/config';
 import { loadAdFeature } from '~app/components/GridAds/AdFeature/action';
+import { mediaBreakPointDown } from '~app/utils/breakpoint';
 
 const GlobalStyle = createGlobalStyle`
   ${normalize}
@@ -20,6 +21,7 @@ const GlobalStyle = createGlobalStyle`
     font-size: 14px;
     /* font-size: 62.5%; */
     box-sizing: border-box;
+
   }
   body {
     margin: 0;
@@ -39,6 +41,14 @@ const GlobalStyle = createGlobalStyle`
   }
   header b, footer b {
     font-size: 14px;
+  }
+  header, footer {
+    ${mediaBreakPointDown(
+      'ltmd',
+      `
+      display: none
+    `
+    )};
   }
 `;
 
@@ -69,8 +79,8 @@ export class MyApp extends App {
   componentDidMount() {
     if (typeof window !== 'undefined') {
       loadContainers(config.gtmContainerId);
+      pushPageMetadata('mkt_landing_page');
     }
-    pushPageMetadata('pty_homepage');
   }
 
   render() {

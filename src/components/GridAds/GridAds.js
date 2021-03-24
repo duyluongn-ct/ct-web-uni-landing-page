@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { config } from '~app/config';
@@ -9,6 +9,7 @@ import AdItem from './AdItem/AdItem';
 import LoadMore from './LoadMore/LoadMore';
 import { getAdParams } from './service/getDataByType';
 import styles from './styles.scss';
+import { getAds } from '~app/containers/Home/actions';
 
 const Wrapper = styled.div`
   background: #ffffff;
@@ -116,10 +117,8 @@ const GridAds = ({
   imgTitle,
   title,
   type,
-  // region,
-  isDone,
   link,
-  ads,
+  urlApi,
   total,
   mappingFeaturesAdData,
   allCategoriesFollowId,
@@ -128,6 +127,17 @@ const GridAds = ({
   adItemLocation,
   adListingParams,
 }) => {
+  const [ads, setAds] = useState([]);
+  const [isDone, setIsDone] = useState(false);
+  useEffect(() => {
+    async function fetchMyAPI() {
+      const { ads: adsList, isDone: isDoneLoad } = await getAds(urlApi);
+      setIsDone(isDoneLoad);
+      setAds(adsList);
+    }
+    fetchMyAPI();
+  }, []);
+
   const listAdsHtml = [];
   for (let i = 0; i < ads.length; i += 1) {
     const ad = ads[i];
@@ -192,9 +202,7 @@ const GridAds = ({
 };
 
 GridAds.propTypes = {
-  ads: PropTypes.arrayOf(PropTypes.object).isRequired,
   mappingFeaturesAdData: PropTypes.shape({}),
-  isDone: PropTypes.bool.isRequired,
   handleClickAdView: PropTypes.func.isRequired,
   handleClickLoadMore: PropTypes.func.isRequired,
   allCategoriesFollowId: PropTypes.shape({}).isRequired,
