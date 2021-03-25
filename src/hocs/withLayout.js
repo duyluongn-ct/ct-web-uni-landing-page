@@ -1,4 +1,5 @@
 import React from 'react';
+import dynamic from 'next/dynamic';
 import styled from 'styled-components';
 import Cookies from 'cookies-js';
 
@@ -8,6 +9,8 @@ import Auth from 'ct-auth';
 import { config, env } from '~app/config';
 import { pushPageMetadataIsLogin } from '~app/utils/gtmTracking';
 import { loadSavedAd } from '~app/components/GridAds/SaveAd/action';
+
+const CustomErrorPage = dynamic(() => import('~app/pages/_error'));
 
 const requires = createRequires(resolve);
 const urlRemote = config.appWrapper.header;
@@ -55,40 +58,48 @@ const site = {
 function withLayout(Child) {
   class WrappedComponent extends React.Component {
     static async getInitialProps(context) {
-      const { isMobile } = context;
-      const pageProp = await Child.getInitialProps(context);
+      try {
+        const { isMobile } = context;
+        const pageProp = await Child.getInitialProps(context);
 
-      const fetcher = (url) =>
-        fetch(url, {
-          retries: 3,
-          retryDelay: 2000,
-        }).then((response) => {
-          if (response.ok) {
-            console.log('\n=====>>>>> GET PlaceHolder');
-            return response.text();
-          } else {
-            const error = new Error(response.statusText);
-            error.response = response;
-            console.log('\n=====>>>>> ERROR PlaceHolder');
-            throw error;
-          }
-        });
+        const fetcher = (url) =>
+          fetch(url, {
+            retries: 3,
+            retryDelay: 2000,
+          }).then((response) => {
+            if (response.ok) {
+              console.log('\n=====>>>>> GET PlaceHolder');
+              return response.text();
+            } else {
+              const error = new Error(response.statusText);
+              error.response = response;
+              console.log('\n=====>>>>> ERROR PlaceHolder');
+              throw error;
+            }
+          });
 
-      let myModule = null;
-      if (cache.has('placeholder')) {
-        console.log('\n=====>>>>> CACHE PlaceHolder');
-        myModule = cache.get('placeholder');
-      } else {
-        myModule = await fetcher(urlRemotePlaceHolder);
-        cache.set('placeholder', myModule);
+        let myModule = null;
+        if (cache.has('placeholder')) {
+          console.log('\n=====>>>>> CACHE PlaceHolder');
+          myModule = cache.get('placeholder');
+        } else {
+          myModule = await fetcher(urlRemotePlaceHolder);
+          cache.set('placeholder', myModule);
+        }
+        return {
+          ...pageProp,
+          remotePlaceHolderData: {
+            props: { isMobile, showNavigation: true },
+            data: myModule,
+          },
+        };
+      } catch (err) {
+        // Assuming that `err` has a `status` property with the HTTP status code.
+        // if (context.res) {
+        //   context.res.writeHead(err.response.status);
+        // }
+        return { err: { statusCode: err.response.status } };
       }
-      return {
-        ...pageProp,
-        remotePlaceHolderData: {
-          props: { isMobile, showNavigation: true },
-          data: myModule,
-        },
-      };
     }
 
     successCallBack = async (data) => {
@@ -102,8 +113,11 @@ function withLayout(Child) {
     };
 
     render() {
-      const { router, store, remotePlaceHolderData } = this.props;
-      router.pageName = 'marketPrice';
+      const { router, store, remotePlaceHolderData, err } = this.props;
+
+      if (err) {
+        return <CustomErrorPage statusCode={err.statusCode} />;
+      }
 
       return (
         <Auth env={env} successCallBack={this.successCallBack} errorCallBack={this.errorCallBack}>
