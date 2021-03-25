@@ -12,7 +12,6 @@ import '~assets/vis.css';
 import { pushPageMetadata } from '~app/utils/gtmTracking';
 import { getChapyConfig } from '~app/modules/config';
 import { loadAdFeature } from '~app/components/GridAds/AdFeature/action';
-import { mediaBreakPointDown } from '~app/utils/breakpoint';
 
 const GlobalStyle = createGlobalStyle`
   ${normalize}
@@ -43,12 +42,7 @@ const GlobalStyle = createGlobalStyle`
     font-size: 14px;
   }
   header, footer {
-    ${mediaBreakPointDown(
-      'ltmd',
-      `
-      display: none
-    `
-    )};
+    display: ${({ app }) => (app ? 'none' : ' block')}
   }
 `;
 
@@ -90,9 +84,10 @@ export class MyApp extends App {
       store,
       router,
     };
+    const { query = {} } = router;
     return (
       <Provider store={store}>
-        <GlobalStyle />
+        <GlobalStyle app={query.app} />
         <Component {...props} />
       </Provider>
     );
