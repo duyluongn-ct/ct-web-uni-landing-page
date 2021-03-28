@@ -1,6 +1,6 @@
 import fetch from 'isomorphic-fetch';
 import Cookies from 'cookies-js';
-import { config } from '~app/config';
+import { config, env } from '~app/config';
 import seoDefaultData from './default/data';
 
 // region
@@ -367,6 +367,24 @@ export function getTotalCount(type, cat, region) {
 
 export const getBlocks = () => {
   const url = `https://www.chotot.org/landing-page-admin/config/`;
+
+  return new Promise((resolve) => {
+    fetch(url)
+      .then((data) => data.json())
+      .then((result) => {
+        return resolve(result);
+      })
+      .catch(() => {
+        return resolve([]);
+      });
+  });
+};
+
+export const getPreview = (id) => {
+  const url =
+    env === 'development'
+      ? `http://localhost:8080/api/v1/public/campaign/${id}`
+      : `${config.baseURL}/api/v1/public/campaign/${id}`;
 
   return new Promise((resolve) => {
     fetch(url)
