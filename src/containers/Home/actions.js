@@ -384,7 +384,7 @@ export const getPreview = (id) => {
   const url =
     env === 'development'
       ? `http://localhost:8080/api/v1/public/campaign/${id}`
-      : `${config.baseURL}/api/v1/public/campaign/${id}`;
+      : `${config.gatewayUrl}/api/v1/public/campaign/${id}`;
 
   return new Promise((resolve) => {
     fetch(url)
