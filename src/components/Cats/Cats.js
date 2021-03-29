@@ -127,7 +127,21 @@ const Title = styled.h2`
   )};
 `;
 
-export const Cats = ({ isMobile, data = {}, imgTitle, title, border = true }) => {
+export const Cats = ({
+  isMobile,
+  data = {},
+  sectionId,
+  imgTitle,
+  title,
+  handleShortCutClick,
+  border = true,
+}) => {
+  const onClick = (link, shortcutId) => {
+    handleShortCutClick(sectionId, shortcutId);
+    setTimeout(() => {
+      window.location.href = link;
+    }, 300);
+  };
   return (
     <Wrapper>
       {imgTitle && <ImgTitle src={isMobile ? imgTitle[1] : imgTitle[0]} />}
@@ -135,7 +149,12 @@ export const Cats = ({ isMobile, data = {}, imgTitle, title, border = true }) =>
       <CatSelectList border={border}>
         {data.map((item) => {
           return (
-            <Cat key={`item-${item.id}`} src={item.dataImage} href={item.link}>
+            <Cat
+              key={`item-${item.id}`}
+              src={item.dataImage}
+              onClick={() => onClick(item.link, item.shortcutId)}
+              href={item.link}
+            >
               {/* <CatInfo>
                 <a className="link" href={item.link}>
                   <img alt={item.largeText} src={item.icon} />

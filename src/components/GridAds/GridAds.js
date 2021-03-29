@@ -116,12 +116,13 @@ const GridAds = ({
   isMobile,
   imgTitle,
   title,
-  type,
+  sectionId,
   link,
   urlApi,
   total,
   mappingFeaturesAdData,
   allCategoriesFollowId,
+  handleTitleClick,
   handleClickAdView,
   handleClickLoadMore,
   adItemLocation,
@@ -148,7 +149,8 @@ const GridAds = ({
       <React.Fragment key={`${ad.type}-${ad.ad_id}-${i}-${ad.account_id}`}>
         <AdItem
           adInfo={ad}
-          type={type}
+          index={i}
+          sectionId={sectionId}
           mappingFeaturesAdData={mappingFeaturesAdData}
           handleClickAdView={handleClickAdView}
           adViewUrl={adViewUrl}
@@ -159,10 +161,19 @@ const GridAds = ({
     );
   }
 
+  const titleClick = () => {
+    handleTitleClick(sectionId);
+    // setTimeout(() => {
+    //   window.location.href = link;
+    // }, 300);
+  };
+
   return isDone === true && listAdsHtml.length === 0 ? null : (
     <Wrapper>
-      {imgTitle && <ImgTitle src={isMobile ? imgTitle[1] : imgTitle[0]} />}
-      {title && title !== '' && <Title>{title}</Title>}
+      {imgTitle && (
+        <ImgTitle onClick={() => titleClick()} src={isMobile ? imgTitle[1] : imgTitle[0]} />
+      )}
+      {title && title !== '' && <Title onClick={() => titleClick()}>{title}</Title>}
       <WrapperScroll total={listAdsHtml.length} cols={4.6} className={styles.oneRowContent}>
         <Grid>
           {listAdsHtml.length === 0
@@ -196,7 +207,12 @@ const GridAds = ({
             : listAdsHtml}
         </Grid>
       </WrapperScroll>
-      <LoadMore type={type} link={link} total={total} handleClickLoadmore={handleClickLoadMore} />
+      <LoadMore
+        sectionId={sectionId}
+        link={link}
+        total={total}
+        handleClickLoadmore={handleClickLoadMore}
+      />
     </Wrapper>
   );
 };

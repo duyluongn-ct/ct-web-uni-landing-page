@@ -27,7 +27,8 @@ const Item = styled.div`
 
 const AdItem = ({
   adInfo,
-  type,
+  index,
+  sectionId,
   mappingFeaturesAdData,
   adViewUrl,
   handleClickAdView,
@@ -36,19 +37,7 @@ const AdItem = ({
 }) => {
   const handleImplementClickAdView = (event) => {
     if (event && handleClickAdView) {
-      let eventName = 'newest_for_sale_ads';
-      switch (type) {
-        case 'adsk':
-          eventName = 'newest_for_sale_ads';
-          break;
-        case 'aduh':
-          eventName = 'newest_for_rent_ads';
-          break;
-
-        default:
-          break;
-      }
-      handleClickAdView(adInfo.ad_id, eventName);
+      handleClickAdView(sectionId, index + 1, adInfo.ad_id);
     }
   };
 
@@ -128,7 +117,6 @@ AdItem.propTypes = {
   mappingFeaturesAdData: PropTypes.shape({}),
   handleClickAdView: PropTypes.func.isRequired,
   adViewUrl: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
   adItemLocation: PropTypes.string,
   adParams: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])),
 };

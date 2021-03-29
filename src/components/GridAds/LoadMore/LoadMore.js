@@ -45,23 +45,13 @@ const Wrapper = styled.div`
   }
 `;
 
-const LoadMore = ({ link, type, total, handleClickLoadmore }) => {
+const LoadMore = ({ sectionId, link, total, handleClickLoadmore }) => {
   const title = total > 0 ? `Xem thêm ${numberWithCommas(total)} tin khác` : 'Xem thêm';
   const onClick = () => {
-    let eventName = 'newest_for_sale_ads';
-    switch (type) {
-      case 'adsk':
-        eventName = 'newest_for_sale_ads';
-        break;
-      case 'aduh':
-        eventName = 'newest_for_rent_ads';
-        break;
-
-      default:
-        break;
-    }
-    handleClickLoadmore(title, eventName);
-    window.location.href = link;
+    handleClickLoadmore(sectionId);
+    setTimeout(() => {
+      window.location.href = link;
+    }, 300);
   };
 
   return (

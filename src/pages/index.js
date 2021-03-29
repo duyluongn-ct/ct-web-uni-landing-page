@@ -45,7 +45,7 @@ Index.getInitialProps = async (ctx) => {
 
   const [seoData, blocks] = await Promise.all([
     getSeo(regionLocation),
-    getBlocks(),
+    getBlocks(query.uri),
     store.dispatch(getRegions()),
   ]);
 

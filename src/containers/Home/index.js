@@ -40,6 +40,10 @@ const Section = styled.div`
     text-align: center;
   }
 
+  a {
+    cursor: pointer;
+  }
+
   .text {
     font-family: Helvetica;
     font-size: 24px;
@@ -95,7 +99,7 @@ const Container = styled.div`
   /* background-color: #fff; */
 `;
 
-const Home = ({ isMobile, auth, blocks = [], seo: { seoData, keywords }, dispatch }) => {
+const Home = ({ isMobile, auth, blocks: dataBlock = [], seo: { seoData, keywords }, dispatch }) => {
   const [isDone, setIsDone] = useState({
     isDoneAdCat1: false,
     isDoneAdCat2: false,
@@ -164,16 +168,51 @@ const Home = ({ isMobile, auth, blocks = [], seo: { seoData, keywords }, dispatc
     }
   }, [auth?.loaded]);
 
+  const handleBannerTopClick = (sectionId) => {
+    gtmTracking('mkt_landing_page', `${sectionId}`, `${dataBlock?.campaignId}_click_headbanner`);
+  };
+
+  const handleShortCutClick = (sectionId, shortcutId) => {
+    gtmTracking(
+      'mkt_landing_page',
+      `${sectionId} | ${shortcutId}`,
+      `${dataBlock?.campaignId}_click_shortcut`
+    );
+  };
+
+  const handleImageClick = (sectionId, link) => {
+    gtmTracking('mkt_landing_page', `${sectionId}`, `${dataBlock?.campaignId}_click_image`);
+    setTimeout(() => {
+      window.location.href = link;
+    }, 300);
+  };
+
+  const handleTitleClick = (sectionId) => {
+    gtmTracking(
+      'mkt_landing_page',
+      `${sectionId}`,
+      `${dataBlock?.campaignId}_click_displayad_title`
+    );
+  };
+
+  const handleClickAdView = (sectionId, position, adId) => {
+    gtmTrackingWithRegion(
+      'mkt_landing_page',
+      `${sectionId} | ${position} | ${adId}`,
+      `${dataBlock?.campaignId}_click_displayad`
+    );
+  };
+
+  const handleClickLoadMore = (sectionId) => {
+    gtmTracking(
+      'mkt_landing_page',
+      `${sectionId}`,
+      `${dataBlock?.campaignId}_click_displayad_see_more`
+    );
+  };
+
   const handlePopularKeywordClick = (item) => {
     gtmTracking('popular_keywords', item.title.replace(/\s+/g, '_').toLowerCase());
-  };
-
-  const handleClickAdView = (labelT, categoryT, action = 'click_ad') => {
-    gtmTrackingWithRegion(categoryT, labelT, action);
-  };
-
-  const handleClickLoadMore = (labelT, categoryT) => {
-    gtmTrackingWithRegion(categoryT, labelT, 'click_see_more');
   };
 
   return (
@@ -186,72 +225,83 @@ const Home = ({ isMobile, auth, blocks = [], seo: { seoData, keywords }, dispatc
       </Head>
 
       <WrapperHome>
-        {blocks.map((block) => {
-          let sec = null;
-          switch (block.type) {
-            case 'banner':
-              sec = (
-                <ContainerBanner key={`sec-${block.id}`}>
-                  <img
-                    width="100%"
-                    alt="Chương trình ưu đãi"
-                    src="https://static.chotot.com/storage/default_images/landing/banner-landing.jpg"
+        {dataBlock.blocks &&
+          dataBlock.blocks.map((block) => {
+            let sec = null;
+            switch (block.type) {
+              case 'banner':
+                sec = (
+                  <ContainerBanner
+                    key={`sec-${block.sectionId}`}
+                    onClick={() => handleBannerTopClick(block.sectionId)}
+                  >
+                    <img
+                      width="100%"
+                      alt="Chương trình ưu đãi"
+                      src="https://static.chotot.com/storage/default_images/landing/banner-landing.jpg"
+                    />
+                    <Gradient />
+                  </ContainerBanner>
+                );
+                break;
+              case 'shortcut':
+                sec = (
+                  <Cats
+                    key={`sec-${block.id}`}
+                    sectionId={block.sectionId}
+                    data={block.shortcut}
+                    border={false}
+                    isMobile={isMobile}
+                    handleShortCutClick={handleShortCutClick}
                   />
-                  <Gradient />
-                </ContainerBanner>
-              );
-              break;
-            case 'shortcut':
-              sec = (
-                <Cats
-                  key={`sec-${block.id}`}
-                  data={block.shortcut}
-                  border={false}
-                  isMobile={isMobile}
-                />
-              );
-              break;
-            case 'linked-image':
-              sec = (
-                <Section key={`sec-${block.id}`}>
-                  <a href={`${block.link}`}>
-                    <img width="100%" alt="Chương trình ưu đãi" src={block.linkImage} />
-                  </a>
-                </Section>
-              );
-              break;
-            case 'filtered-ads':
-              sec = (
-                <GridAds
-                  key={`sec-${block.id}`}
-                  type="adCat1"
-                  isMobile={isMobile}
-                  isDone={isDone.isDoneAdCat1}
-                  imgTitle={[
-                    block.headerBg,
-                    block.headerBgMobile
-                      ? block.headerBgMobile
-                      : 'https://static.chotot.com/storage/default_images/landing/type-1-m.jpg',
-                  ]}
-                  title=""
-                  urlApi={block.filterAd}
-                  link={`${config.propertyURL}/${region.regionUrl}/mua-ban-dat`}
-                  region={region}
-                  ads={ads.adCat1}
-                  total={0}
-                  mappingFeaturesAdData={mappingFeaturesAdData}
-                  allCategoriesFollowId={allCategoriesFollowId}
-                  handleClickAdView={handleClickAdView}
-                  handleClickLoadMore={handleClickLoadMore}
-                />
-              );
-              break;
+                );
+                break;
+              case 'linked-image':
+                sec = (
+                  <Section
+                    key={`sec-${block.id}`}
+                    onClick={() => handleImageClick(block.sectionId, block.link)}
+                  >
+                    <a>
+                      <img width="100%" alt="Chương trình ưu đãi" src={block.linkImage} />
+                    </a>
+                  </Section>
+                );
+                break;
+              case 'filtered-ads':
+                sec = (
+                  <GridAds
+                    key={`sec-${block.id}`}
+                    type="adCat1"
+                    sectionId={block.sectionId}
+                    isMobile={isMobile}
+                    isDone={isDone.isDoneAdCat1}
+                    imgTitle={[
+                      block.headerBg,
+                      block.headerBgMobile
+                        ? block.headerBgMobile
+                        : 'https://static.chotot.com/storage/default_images/landing/type-1-m.jpg',
+                    ]}
+                    title=""
+                    urlApi={block.filteredAd}
+                    link={`${config.propertyURL}/${region.regionUrl}/mua-ban-dat`}
+                    region={region}
+                    ads={ads.adCat1}
+                    total={0}
+                    mappingFeaturesAdData={mappingFeaturesAdData}
+                    allCategoriesFollowId={allCategoriesFollowId}
+                    handleTitleClick={handleTitleClick}
+                    handleClickAdView={handleClickAdView}
+                    handleClickLoadMore={handleClickLoadMore}
+                  />
+                );
+                break;
 
-            default:
-              break;
-          }
-          return sec;
-        })}
+              default:
+                break;
+            }
+            return sec;
+          })}
 
         {seoData.catDescription && (
           <Container>
