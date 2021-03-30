@@ -19,6 +19,7 @@ const urlRemotePlaceHolder = config.appWrapper.placeholder;
 
 const Main = styled.main`
   min-height: calc(100vh - 270px);
+  background-color: ${({ theme }) => (theme ? theme : '')};
 `;
 
 const originalFetch = require('isomorphic-fetch');
@@ -113,7 +114,7 @@ function withLayout(Child) {
     };
 
     render() {
-      const { router, store, remotePlaceHolderData, err } = this.props;
+      const { router, store, remotePlaceHolderData, err, blocks } = this.props;
 
       if (err) {
         return <CustomErrorPage statusCode={err.statusCode} />;
@@ -134,7 +135,7 @@ function withLayout(Child) {
                 shop={shop}
                 env={env}
               />
-              <Main>
+              <Main theme={blocks?.theme}>
                 <Child {...this.props} />
               </Main>
               <RemoteComponent
