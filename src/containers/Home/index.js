@@ -131,12 +131,12 @@ const Home = ({ isMobile, auth, blocks: dataBlock = [], seo: { seoData, keywords
       regionLocation = JSON.parse(regionLocation);
     }
 
-    async function fetchMyAPI() {
-      setRegion(regionLocation);
-    }
-    if (auth?.loaded) {
-      fetchMyAPI();
-    }
+    setRegion(regionLocation);
+    // async function fetchMyAPI() {
+    // }
+    // if (auth?.loaded) {
+    //   fetchMyAPI();
+    // }
   }, [auth?.loaded]);
 
   const handleBannerTopClick = (sectionId) => {
