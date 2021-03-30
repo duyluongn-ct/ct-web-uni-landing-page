@@ -281,7 +281,7 @@ const Home = ({ isMobile, auth, blocks: dataBlock = [], seo: { seoData, keywords
           })}
 
         {seoData.catDescription && (
-          <Container>
+          <Container className="desc-bottom">
             {seoData.catDescription && <Description content={seoData.catDescription} />}
             {keywords.length > 0 && (
               <Row className="hidden-xs">
