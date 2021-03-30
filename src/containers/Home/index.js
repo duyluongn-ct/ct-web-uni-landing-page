@@ -7,7 +7,6 @@ import Keywords from '~app/components/Keywords';
 import Description from '~app/components/Description';
 import { mediaBreakPointDown } from '~app/utils/breakpoint';
 import gtmTracking, { gtmTrackingWithRegion } from '~app/utils/gtmTracking';
-import { getAds } from '~app/containers/Home/actions';
 import GridAds from '~app/components/GridAds/GridAds';
 import { config } from '~app/config';
 import SnackBar from '~app/components/SnackBar/SnackBar';
@@ -100,16 +99,6 @@ const Container = styled.div`
 `;
 
 const Home = ({ isMobile, auth, blocks: dataBlock = [], seo: { seoData, keywords }, dispatch }) => {
-  const [isDone, setIsDone] = useState({
-    isDoneAdCat1: false,
-    isDoneAdCat2: false,
-    isDoneAdCat3: false,
-  });
-  const [ads, setAds] = useState({
-    adCat1: [],
-    adCat2: [],
-    adCat3: [],
-  });
   const [region, setRegion] = useState({
     regionValue: 0,
     regionUrl: 'toan-quoc',
@@ -143,24 +132,6 @@ const Home = ({ isMobile, auth, blocks: dataBlock = [], seo: { seoData, keywords
     }
 
     async function fetchMyAPI() {
-      const [
-        { ads: adCat1 = [], isDone: isDoneAdCat1 = true },
-        { ads: adCat2 = [], isDone: isDoneAdCat2 = true },
-        { ads: adCat3 = [], isDone: isDoneAdCat3 = true },
-      ] = await Promise.all([getAds({ cg: 1040 }), getAds({ cg: 1010 }), getAds({ cg: 1020 })]);
-
-      setIsDone({
-        isDoneAdCat1,
-        isDoneAdCat2,
-        isDoneAdCat3,
-      });
-      const adsList = {
-        ...ads,
-        adCat1,
-        adCat2,
-        adCat3,
-      };
-      setAds({ ...adsList });
       setRegion(regionLocation);
     }
     if (auth?.loaded) {
@@ -275,7 +246,6 @@ const Home = ({ isMobile, auth, blocks: dataBlock = [], seo: { seoData, keywords
                     type="adCat1"
                     sectionId={block.sectionId}
                     isMobile={isMobile}
-                    isDone={isDone.isDoneAdCat1}
                     imgTitle={[
                       block.headerBg,
                       block.headerBgMobile
@@ -286,7 +256,6 @@ const Home = ({ isMobile, auth, blocks: dataBlock = [], seo: { seoData, keywords
                     urlApi={block.filteredAd}
                     link={`${config.propertyURL}/${region.regionUrl}/mua-ban-dat`}
                     region={region}
-                    ads={ads.adCat1}
                     total={0}
                     mappingFeaturesAdData={mappingFeaturesAdData}
                     allCategoriesFollowId={allCategoriesFollowId}
