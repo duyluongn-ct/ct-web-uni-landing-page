@@ -44,6 +44,9 @@ const GlobalStyle = createGlobalStyle`
   header, footer {
     display: ${({ app }) => (app ? 'none' : ' block')}
   }
+  .desc-bottom {
+    display: ${({ app }) => (app ? 'none' : ' block')}
+  }
 `;
 
 export class MyApp extends App {
