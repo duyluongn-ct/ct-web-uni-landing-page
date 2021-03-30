@@ -193,6 +193,14 @@ const Home = ({ isMobile, auth, blocks: dataBlock = [], seo: { seoData, keywords
         {seoData.meta.map((item, index) => (
           <meta key={index.toString()} {...item} />
         ))}
+        <meta
+          name="og:image"
+          content={
+            dataBlock.blocks[0]
+              ? dataBlock.blocks[0].bannerImageMobile
+              : 'https://static.chotot.com/storage/marketplace/transparent_logo.png'
+          }
+        />
       </Head>
 
       <WrapperHome>

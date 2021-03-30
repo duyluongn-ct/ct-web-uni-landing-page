@@ -129,8 +129,8 @@ export function getBanners() {
   });
 }
 
-export function getSeo() {
-  const url = `${config.gatewayUrl}/v1/public/seo-api/tag?siteId=3&uri=homepage-pty`;
+export function getSeo(uri) {
+  const url = `${config.gatewayUrl}/v1/public/seo-api/tag?siteId=3&uri=${uri}`;
 
   return new Promise((resolve) => {
     fetch(url)
