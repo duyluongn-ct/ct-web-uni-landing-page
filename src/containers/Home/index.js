@@ -8,7 +8,6 @@ import Description from '~app/components/Description';
 import { mediaBreakPointDown } from '~app/utils/breakpoint';
 import gtmTracking, { gtmTrackingWithRegion } from '~app/utils/gtmTracking';
 import GridAds from '~app/components/GridAds/GridAds';
-import { config } from '~app/config';
 import SnackBar from '~app/components/SnackBar/SnackBar';
 import { resetMessage } from '~app/components/GridAds/SaveAd/action';
 import { Cats } from '~app/components/Cats/Cats';
@@ -261,7 +260,7 @@ const Home = ({ isMobile, auth, blocks: dataBlock = [], seo: { seoData, keywords
                     ]}
                     title=""
                     urlApi={block.filteredAd}
-                    link={`${config.propertyURL}/${region.regionUrl}/mua-ban-dat`}
+                    link={`${block.link}`}
                     region={region}
                     total={0}
                     mappingFeaturesAdData={mappingFeaturesAdData}
