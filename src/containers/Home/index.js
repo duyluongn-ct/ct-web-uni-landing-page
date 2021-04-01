@@ -214,7 +214,7 @@ const Home = ({ isMobile, auth, blocks: dataBlock = [], seo: { seoData, keywords
                   >
                     <img
                       width="100%"
-                      alt="Chương trình ưu đãi"
+                      alt={block.bannerImageAlt ? block.bannerImageAlt : 'Chương trình ưu đãi'}
                       src="https://static.chotot.com/storage/default_images/landing/banner-landing.jpg"
                     />
                     <Gradient />
@@ -240,7 +240,11 @@ const Home = ({ isMobile, auth, blocks: dataBlock = [], seo: { seoData, keywords
                     onClick={() => handleImageClick(block.sectionId, block.link)}
                   >
                     <a>
-                      <img width="100%" alt="Chương trình ưu đãi" src={block.linkImage} />
+                      <img
+                        width="100%"
+                        alt={block.bannerImageAlt ? block.bannerImageAlt : 'Chương trình ưu đãi'}
+                        src={block.linkImage}
+                      />
                     </a>
                   </Section>
                 );
