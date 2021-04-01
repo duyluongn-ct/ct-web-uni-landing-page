@@ -6,7 +6,7 @@ metadata:
 
   # Short text description of service or resource,
   # can support English and Vietnamese
-  description: CT Home Page
+  description: CT landing-page
 
   labels:
     # Name of which system (aka Feature) the component is collection of
@@ -26,7 +26,7 @@ metadata:
     HelmChart: N/A
 
     # App name of Grafana dashboard
-    Grafana: new-pty-home-page
+    Grafana: landing-page
     # Service name of Grafana dashboard
     # Project name of Grafana dashboard
 
@@ -60,7 +60,7 @@ metadata:
 
   # Short text description of service or resource,
   # can support English and Vietnamese
-  description: CT Home Page
+  description: CT landing-page
 
   labels:
     # Name of which system (aka Feature) the component is collection of
