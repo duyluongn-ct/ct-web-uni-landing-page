@@ -152,6 +152,7 @@ export const Cats = ({
             <Cat
               key={`item-${item.id}`}
               src={item.dataImage}
+              title={item.imageAlt}
               onClick={() => onClick(item.link, item.shortcutId)}
               href={item.link}
             >
