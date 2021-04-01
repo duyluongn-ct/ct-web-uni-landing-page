@@ -68,3 +68,93 @@ export const SEO = {
     },
   ],
 };
+
+export const catData = [
+  {
+    img: 'https://static.chotot.com/storage/default_images/landing/hcm-1.jpg',
+    icon: 'https://static.chotot.com/storage/default_images/landing/shape.svg',
+    link: 'https://nha.chotot.com/tp-ho-chi-minh/mua-ban-bat-dong-san',
+    smallText: 'BẤT ĐỘNG SẢN',
+    largeText: 'HỒ CHÍ MINH',
+  },
+  {
+    img: 'https://static.chotot.com/storage/default_images/landing/hanoi-new-1.jpg',
+    icon: 'https://static.chotot.com/storage/default_images/landing/shape.svg',
+    link: 'https://nha.chotot.com/ha-noi/mua-ban-bat-dong-san',
+    smallText: 'BẤT ĐỘNG SẢN',
+    largeText: 'HÀ NỘI',
+  },
+  {
+    img: 'https://static.chotot.com/storage/default_images/landing/binhduong-1.jpg',
+    icon: 'https://static.chotot.com/storage/default_images/landing/shape.svg',
+    link: 'https://nha.chotot.com/binh-duong/mua-ban-bat-dong-san',
+    smallText: 'BẤT ĐỘNG SẢN',
+    largeText: 'BÌNH DƯƠNG',
+  },
+  {
+    img: 'https://static.chotot.com/storage/default_images/landing/danang-1.jpg',
+    icon: 'https://static.chotot.com/storage/default_images/landing/shape.svg',
+    link: 'https://nha.chotot.com/da-nang/mua-ban-bat-dong-san',
+    smallText: 'BẤT ĐỘNG SẢN',
+    largeText: 'QUẢNG NAM ĐÀ NẴNG',
+  },
+  {
+    img: 'https://static.chotot.com/storage/default_images/landing/cantho-1.jpg',
+    icon: 'https://static.chotot.com/storage/default_images/landing/shape.svg',
+    link: 'https://nha.chotot.com/can-tho/mua-ban-bat-dong-san',
+    smallText: 'BẤT ĐỘNG SẢN',
+    largeText: 'CẦN THƠ MIỀN TÂY',
+  },
+  {
+    img: 'https://static.chotot.com/storage/default_images/landing/taynguyen-1.jpg',
+    icon: 'https://static.chotot.com/storage/default_images/landing/shape.svg',
+    link: 'https://nha.chotot.com/gia-lai/mua-ban-bat-dong-san',
+    smallText: 'BẤT ĐỘNG SẢN',
+    largeText: 'TÂY NGUYÊN',
+  },
+];
+
+export const typeData = [
+  {
+    img: 'https://static.chotot.com/storage/default_images/landing/type-new-1.jpg',
+    icon: 'https://static.chotot.com/storage/default_images/landing/group-31.svg',
+    link: 'https://nha.chotot.com/tp-ho-chi-minh/mua-ban-bat-dong-san',
+    // smallText: 'BẤT ĐỘNG SẢN',
+    largeText: 'BIỆT THỰ NGHỈ DƯỠNG',
+  },
+  {
+    img: 'https://static.chotot.com/storage/default_images/landing/type-new-2.jpg',
+    icon: 'https://static.chotot.com/storage/default_images/landing/group-23.svg',
+    link: 'https://nha.chotot.com/ha-noi/mua-ban-bat-dong-san',
+    // smallText: 'BẤT ĐỘNG SẢN',
+    largeText: 'DỰ ÁN',
+  },
+  {
+    img: 'https://static.chotot.com/storage/default_images/landing/type-new-3.jpg',
+    icon: 'https://static.chotot.com/storage/default_images/landing/group-7.svg',
+    link: 'https://nha.chotot.com/binh-duong/mua-ban-bat-dong-san',
+    // smallText: 'BẤT ĐỘNG SẢN',
+    largeText: 'ĐẤT NỀN',
+  },
+  {
+    img: 'https://static.chotot.com/storage/default_images/landing/type-new-4.jpg',
+    icon: 'https://static.chotot.com/storage/default_images/landing/group-26.svg',
+    link: 'https://nha.chotot.com/da-nang/mua-ban-bat-dong-san',
+    // smallText: 'BẤT ĐỘNG SẢN',
+    largeText: 'NHÀ NÁT',
+  },
+  {
+    img: 'https://static.chotot.com/storage/default_images/landing/type-new-5.jpg',
+    icon: 'https://static.chotot.com/storage/default_images/landing/group-33.svg',
+    link: 'https://nha.chotot.com/can-tho/mua-ban-bat-dong-san',
+    // smallText: 'BẤT ĐỘNG SẢN',
+    largeText: 'CHUNG CƯ',
+  },
+  {
+    img: 'https://static.chotot.com/storage/default_images/landing/type-new-6.jpg',
+    icon: 'https://static.chotot.com/storage/default_images/landing/group-3.svg',
+    link: 'https://nha.chotot.com/gia-lai/mua-ban-bat-dong-san',
+    // smallText: 'BẤT ĐỘNG SẢN',
+    largeText: 'KHÁC',
+  },
+];

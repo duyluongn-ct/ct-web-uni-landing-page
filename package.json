@@ -1,7 +1,7 @@
 {
-  "name": "new-pty-home-page",
+  "name": "landing-page",
   "version": "1.0.2",
-  "description": "A new PTY home page for ChoTot",
+  "description": "A new Landing Page for ChoTot",
   "main": "index.js",
   "repository": "ssh://git@git.chotot.org:2222/chotot-master/new-home-page.git",
   "author": "<thangphan@chotot.vn>",

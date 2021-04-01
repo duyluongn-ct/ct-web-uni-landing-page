@@ -1,7 +1,7 @@
 FROM node:12.6.0-alpine
 ARG BUILD_ID
 ENV BUILD_ID=$BUILD_ID
-WORKDIR /market-price
+WORKDIR /landing-page
 COPY . ./
 RUN yarn install
 

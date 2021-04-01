@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import withLayout from '~app/hocs/withLayout';
 import Home from '~app/containers/Home';
-import { getRegions, getSeo } from '~app/containers/Home/actions';
+import { getRegions, getSeo, getBlocks } from '~app/containers/Home/actions';
 
 const Index = (props) => {
   return <Home {...props} />;
@@ -43,11 +43,16 @@ Index.getInitialProps = async (ctx) => {
     }
   }
 
-  const [seoData] = await Promise.all([getSeo(regionLocation), store.dispatch(getRegions())]);
+  const [seoData, blocks] = await Promise.all([
+    getSeo(query.uri),
+    getBlocks(query.uri),
+    store.dispatch(getRegions()),
+  ]);
 
   return {
     pageName: 'marketPrice',
     seo: seoData,
+    blocks,
     referer,
     isMobile,
     isServer,

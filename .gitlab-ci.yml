@@ -1,11 +1,11 @@
 variables:
-  GITOPS_HELM_YAML_FILE: 'app-web/market-price.yaml'
+  GITOPS_HELM_YAML_FILE: 'app-web/landing-page.yaml'
   DEV_GATEWAY_DOMAIN: 'gateway.chotot.org'
   UAT_GATEWAY_DOMAIN: 'gateway.chotot.org'
 
 before_script:
   - pwd
-  - export DIST_NAME=market-price
+  - export DIST_NAME=landing-page
   - export VERSION=`wsm new-versioning $CI_BUILD_REF_NAME`
   - export BUILD_ID="${CI_COMMIT_SHORT_SHA}"
   - echo DIST_NAME=$DIST_NAME

@@ -28,6 +28,7 @@ export const config = {
   iconUrl: 'https://static.chotot.com/storage/icons/logos/ad-param/',
   seoAPI: 'http://seo-api.default.svc.cluster.local/graphql',
   bannerAPI: 'http://buyer-collection.default.svc.cluster.local/api',
+  errorImgUrl: 'https://static.chotot.com/storage/empty_state/desktop/',
   appWrapper: {
     header: `https://static.chotot.com/storage/APP_WRAPPER/${env}/header.js`,
     footer: `https://static.chotot.com/storage/APP_WRAPPER/${env}/footer.js`,

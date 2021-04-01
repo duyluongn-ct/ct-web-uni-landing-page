@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { config } from '~app/config';
@@ -9,9 +9,11 @@ import AdItem from './AdItem/AdItem';
 import LoadMore from './LoadMore/LoadMore';
 import { getAdParams } from './service/getDataByType';
 import styles from './styles.scss';
+import { getAds } from '~app/containers/Home/actions';
 
 const Wrapper = styled.div`
   background: #ffffff;
+  margin-bottom: 12px;
 
   ${mediaBreakPointDown(
     'md',
@@ -83,6 +85,13 @@ const Grid = styled.div`
   )};
 `;
 
+const ImgTitle = styled.div`
+  height: 52px;
+  background: url(${({ src }) => (src ? src : '')}) no-repeat;
+  background-size: 100% 100%;
+  margin-bottom: 12px;
+`;
+
 const Title = styled.h2`
   font-size: 17px;
   font-weight: bold;
@@ -104,20 +113,32 @@ const Title = styled.h2`
 `;
 
 const GridAds = ({
+  isMobile,
+  imgTitle,
   title,
-  type,
-  // region,
-  isDone,
+  sectionId,
   link,
-  ads,
+  urlApi,
   total,
   mappingFeaturesAdData,
   allCategoriesFollowId,
+  handleTitleClick,
   handleClickAdView,
   handleClickLoadMore,
   adItemLocation,
   adListingParams,
 }) => {
+  const [ads, setAds] = useState([]);
+  const [isDone, setIsDone] = useState(false);
+  useEffect(() => {
+    async function fetchMyAPI() {
+      const { ads: adsList, isDone: isDoneLoad } = await getAds(urlApi);
+      setIsDone(isDoneLoad);
+      setAds(adsList);
+    }
+    fetchMyAPI();
+  }, []);
+
   const listAdsHtml = [];
   for (let i = 0; i < ads.length; i += 1) {
     const ad = ads[i];
@@ -128,7 +149,8 @@ const GridAds = ({
       <React.Fragment key={`${ad.type}-${ad.ad_id}-${i}-${ad.account_id}`}>
         <AdItem
           adInfo={ad}
-          type={type}
+          index={i}
+          sectionId={sectionId}
           mappingFeaturesAdData={mappingFeaturesAdData}
           handleClickAdView={handleClickAdView}
           adViewUrl={adViewUrl}
@@ -139,9 +161,19 @@ const GridAds = ({
     );
   }
 
+  const titleClick = () => {
+    handleTitleClick(sectionId);
+    // setTimeout(() => {
+    //   window.location.href = link;
+    // }, 300);
+  };
+
   return isDone === true && listAdsHtml.length === 0 ? null : (
     <Wrapper>
-      <Title>{title}</Title>
+      {imgTitle && (
+        <ImgTitle onClick={() => titleClick()} src={isMobile ? imgTitle[1] : imgTitle[0]} />
+      )}
+      {title && title !== '' && <Title onClick={() => titleClick()}>{title}</Title>}
       <WrapperScroll total={listAdsHtml.length} cols={4.6} className={styles.oneRowContent}>
         <Grid>
           {listAdsHtml.length === 0
@@ -175,15 +207,18 @@ const GridAds = ({
             : listAdsHtml}
         </Grid>
       </WrapperScroll>
-      <LoadMore type={type} link={link} total={total} handleClickLoadmore={handleClickLoadMore} />
+      <LoadMore
+        sectionId={sectionId}
+        link={link}
+        total={total}
+        handleClickLoadmore={handleClickLoadMore}
+      />
     </Wrapper>
   );
 };
 
 GridAds.propTypes = {
-  ads: PropTypes.arrayOf(PropTypes.object).isRequired,
   mappingFeaturesAdData: PropTypes.shape({}),
-  isDone: PropTypes.bool.isRequired,
   handleClickAdView: PropTypes.func.isRequired,
   handleClickLoadMore: PropTypes.func.isRequired,
   allCategoriesFollowId: PropTypes.shape({}).isRequired,

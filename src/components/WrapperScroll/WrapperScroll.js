@@ -55,15 +55,6 @@ export default class WrapperScroll extends PureComponent {
     }
   }
 
-  // eslint-disable-next-line react/no-deprecated
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.total > nextProps.cols) {
-      this.setState({
-        isShowIconNext: true,
-      });
-    }
-  }
-
   componentWillUnmount() {
     this.refWrapper.removeEventListener('scroll', this.handleScroll);
   }

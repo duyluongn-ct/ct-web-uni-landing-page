@@ -3,8 +3,10 @@ import {
   LOAD_SAVED_AD_SUCCESS,
   LOAD_SAVED_AD_FAIL,
   UNSAVE_AD_SUCCESS,
+  UNSAVE_AD_FAIL,
   SAVE_AD_SUCCESS,
   SAVE_AD_ACTION,
+  SAVE_AD_FAIL,
   UNSAVE_AD_ACTION,
   RESET_MESSAGE,
 } from './action';
@@ -55,6 +57,14 @@ export default function reducer(state = INITIAL_STATE, action = {}) {
       return {
         ...state,
         ...data,
+      };
+    }
+
+    case UNSAVE_AD_FAIL:
+    case SAVE_AD_FAIL: {
+      return {
+        ...state,
+        message: action.error.message,
       };
     }
 

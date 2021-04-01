@@ -20,6 +20,7 @@ const GlobalStyle = createGlobalStyle`
     font-size: 14px;
     /* font-size: 62.5%; */
     box-sizing: border-box;
+
   }
   body {
     margin: 0;
@@ -39,6 +40,12 @@ const GlobalStyle = createGlobalStyle`
   }
   header b, footer b {
     font-size: 14px;
+  }
+  header, footer {
+    display: ${({ app }) => (app ? 'none' : ' block')}
+  }
+  .desc-bottom {
+    display: ${({ app }) => (app ? 'none' : ' block')}
   }
 `;
 
@@ -69,8 +76,8 @@ export class MyApp extends App {
   componentDidMount() {
     if (typeof window !== 'undefined') {
       loadContainers(config.gtmContainerId);
+      pushPageMetadata('mkt_landing_page');
     }
-    pushPageMetadata('pty_homepage');
   }
 
   render() {
@@ -80,9 +87,10 @@ export class MyApp extends App {
       store,
       router,
     };
+    const { query = {} } = router;
     return (
       <Provider store={store}>
-        <GlobalStyle />
+        <GlobalStyle app={query.app} />
         <Component {...props} />
       </Provider>
     );
