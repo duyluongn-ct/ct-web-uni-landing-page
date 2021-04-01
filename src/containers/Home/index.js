@@ -190,13 +190,12 @@ const Home = ({ isMobile, auth, blocks: dataBlock = [], seo: { seoData, keywords
     <>
       <Head>
         <title>{seoData.title}</title>
-        {seoData.meta.map((item, index) => (
-          <meta key={index.toString()} {...item} />
-        ))}
+        {seoData.meta &&
+          seoData.meta.map((item, index) => <meta key={index.toString()} {...item} />)}
         <meta
           name="og:image"
           content={
-            dataBlock.blocks[0]
+            dataBlock.blocks && dataBlock.blocks[0]
               ? dataBlock.blocks[0].bannerImageMobile
               : 'https://static.chotot.com/storage/marketplace/transparent_logo.png'
           }
@@ -248,7 +247,7 @@ const Home = ({ isMobile, auth, blocks: dataBlock = [], seo: { seoData, keywords
                 );
                 break;
               case 'filtered-ads':
-                sec = (
+                sec = block.filteredAd && (
                   <GridAds
                     key={`sec-${block.id}`}
                     type="adCat1"
@@ -294,7 +293,11 @@ const Home = ({ isMobile, auth, blocks: dataBlock = [], seo: { seoData, keywords
           </Container>
         )}
         {saveAdMessage && (
-          <SnackBar hideCallBack={() => dispatch(resetMessage())} message={saveAdMessage} />
+          <SnackBar
+            hideCallBack={() => dispatch(resetMessage())}
+            autoHideDuration={3000}
+            message={saveAdMessage}
+          />
         )}
       </WrapperHome>
     </>
