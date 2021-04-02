@@ -86,10 +86,10 @@ const Grid = styled.div`
 `;
 
 const ImgTitle = styled.div`
-  height: 52px;
+  height: 64px;
   background: url(${({ src }) => (src ? src : '')}) no-repeat;
   background-size: 100% 100%;
-  margin-bottom: 12px;
+  // margin-bottom: 12px;
 `;
 
 const Title = styled.h2`
