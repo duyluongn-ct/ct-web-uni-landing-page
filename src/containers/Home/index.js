@@ -229,6 +229,12 @@ const Home = ({ isMobile, auth, blocks: dataBlock = [], seo: { seoData, keywords
                     data={block.shortcut}
                     border={false}
                     isMobile={isMobile}
+                    imgTitle={[
+                      block.headerBg,
+                      block.headerBgMobile
+                        ? block.headerBgMobile
+                        : 'https://static.chotot.com/storage/default_images/landing/type-1-m.jpg',
+                    ]}
                     handleShortCutClick={handleShortCutClick}
                   />
                 );
