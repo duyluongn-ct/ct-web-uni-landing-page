@@ -215,7 +215,12 @@ const Home = ({ isMobile, auth, blocks: dataBlock = [], seo: { seoData, keywords
                     <img
                       width="100%"
                       alt={block.bannerImageAlt ? block.bannerImageAlt : 'Chương trình ưu đãi'}
-                      src="https://static.chotot.com/storage/default_images/landing/banner-landing.jpg"
+                      src={
+                        isMobile && block.bannerImageMobile
+                          ? block.bannerImageMobile
+                          : block.bannerImage ||
+                            'https://static.chotot.com/storage/default_images/landing/banner-landing.jpg'
+                      }
                     />
                     <Gradient />
                   </ContainerBanner>
@@ -229,6 +234,16 @@ const Home = ({ isMobile, auth, blocks: dataBlock = [], seo: { seoData, keywords
                     data={block.shortcut}
                     border={false}
                     isMobile={isMobile}
+                    imgTitle={
+                      block.headerBg || block.headerBgMobile
+                        ? [
+                            block.headerBg,
+                            block.headerBgMobile
+                              ? block.headerBgMobile
+                              : 'https://static.chotot.com/storage/default_images/landing/type-1-m.jpg',
+                          ]
+                        : null
+                    }
                     handleShortCutClick={handleShortCutClick}
                   />
                 );
@@ -256,12 +271,16 @@ const Home = ({ isMobile, auth, blocks: dataBlock = [], seo: { seoData, keywords
                     type="adCat1"
                     sectionId={block.sectionId}
                     isMobile={isMobile}
-                    imgTitle={[
-                      block.headerBg,
-                      block.headerBgMobile
-                        ? block.headerBgMobile
-                        : 'https://static.chotot.com/storage/default_images/landing/type-1-m.jpg',
-                    ]}
+                    imgTitle={
+                      block.headerBg || block.headerBgMobile
+                        ? [
+                            block.headerBg,
+                            block.headerBgMobile
+                              ? block.headerBgMobile
+                              : 'https://static.chotot.com/storage/default_images/landing/type-1-m.jpg',
+                          ]
+                        : null
+                    }
                     title=""
                     urlApi={block.filteredAd}
                     link={`${block.link}`}
