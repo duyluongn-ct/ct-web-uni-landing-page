@@ -101,10 +101,10 @@ const Cat = styled.a`
 // `;
 
 const ImgTitle = styled.div`
-  height: 40px;
+  height: 64px;
   background: url(${({ src }) => (src ? src : '')}) no-repeat;
   background-size: cover;
-  margin-bottom: 12px;
+  // margin-bottom: 12px;
 `;
 
 const Title = styled.h2`
