@@ -18,7 +18,7 @@ const Wrapper = styled.div`
   ${mediaBreakPointDown(
     'md',
     `
-    padding: 12px 0 0 0;
+    padding: 0;
   `
   )};
 `;
