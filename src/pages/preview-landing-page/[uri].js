@@ -1,15 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import withLayout from '~app/hocs/withLayout';
-import Preview from '~app/containers/Preview';
-import { getRegions, getSeo, getPreview } from '~app/containers/Home/actions';
+import Home from '~app/containers/Home';
+import { getRegions, getSeo, getBlocks } from '~app/containers/Home/actions';
 
-const PreviewPage = (props) => {
-    console.log(props.blocks)
-  return <Preview {...props} />;
+const Index = (props) => {
+  return <Home {...props} />;
 };
 
-PreviewPage.getInitialProps = async (ctx) => {
+Index.getInitialProps = async (ctx) => {
   const { query, req, isMobile, isServer, store } = ctx;
   let referer = '';
   let cookieLocation = 'toan-quoc';
@@ -44,16 +43,16 @@ PreviewPage.getInitialProps = async (ctx) => {
     }
   }
 
-  const [seoData, campaign] = await Promise.all([
-    getSeo(regionLocation),
-    getPreview(query.id),
+  const [seoData, blocks] = await Promise.all([
+    getSeo(query.uri),
+    getBlocks(query.uri),
     store.dispatch(getRegions()),
   ]);
 
   return {
     pageName: 'marketPrice',
     seo: seoData,
-    blocks: campaign.blocks,
+    blocks,
     referer,
     isMobile,
     isServer,
@@ -68,4 +67,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, null)(withLayout(PreviewPage));
+export default connect(mapStateToProps, null)(withLayout(Index));
