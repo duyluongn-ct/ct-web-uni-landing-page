@@ -367,7 +367,7 @@ export function getTotalCount(type, cat, region) {
 
 export const getBlocks = (uri) => {
   // const url = `https://www.chotot.org/landing-page-admin/config/`;
-  const url = `${config.gatewayUrl}/v2/public/landing-page-admin/campaign/?uri=${uri}`;
+  const url = `${config.gatewayUrl}/v1/public/landing-page-admin/campaign/?uri=${uri}`;
 
   return new Promise((resolve) => {
     fetch(url)
