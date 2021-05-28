@@ -30,6 +30,7 @@ const Cat = styled.a`
   cursor: pointer;
   background: url(${({ src }) => (src ? src : '')}) no-repeat;
   background-size: cover;
+  background-position: center;
 
   ${mediaBreakPointDown(
     'ltmd',
