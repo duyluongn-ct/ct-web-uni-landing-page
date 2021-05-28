@@ -32,30 +32,6 @@ const LRUOption = {
 };
 const cache = new LRU(LRUOption);
 
-const site = {
-  siteName: 'property',
-  dropDownSearch: true,
-  href: `${config.propertyURL}`,
-  actions: {
-    search: (text) => {
-      if (typeof window !== 'undefined') {
-        let listingParams = Cookies.get('listingParams');
-        if (!listingParams) {
-          listingParams = '{"region":"toan-quoc"}';
-        }
-        listingParams = JSON.parse(listingParams);
-        let url = listingParams.region;
-        if (listingParams.subRegion) {
-          url = `${url}/${listingParams.subRegion}`;
-        }
-        url = `${config.baseURL}/${url}/mua-ban?q=${text}`;
-        Cookies.set('searchNavigation', '1');
-        window.location.href = url;
-      }
-    },
-  },
-};
-
 function withLayout(Child) {
   class WrappedComponent extends React.Component {
     static async getInitialProps(context) {
@@ -115,10 +91,35 @@ function withLayout(Child) {
 
     render() {
       const { router, store, remotePlaceHolderData, err, blocks } = this.props;
+      const { campaign } = store.getState();
 
       if (err) {
         return <CustomErrorPage statusCode={err.statusCode} />;
       }
+
+      const site = {
+        siteName: campaign.blocks.siteName || 'c2c',
+        dropDownSearch: true,
+        href: `${config.propertyURL}`,
+        actions: {
+          search: (text) => {
+            if (typeof window !== 'undefined') {
+              let listingParams = Cookies.get('listingParams');
+              if (!listingParams) {
+                listingParams = '{"region":"toan-quoc"}';
+              }
+              listingParams = JSON.parse(listingParams);
+              let url = listingParams.region;
+              if (listingParams.subRegion) {
+                url = `${url}/${listingParams.subRegion}`;
+              }
+              url = `${config.baseURL}/${url}/mua-ban?q=${text}`;
+              Cookies.set('searchNavigation', '1');
+              window.location.href = url;
+            }
+          },
+        },
+      };
 
       return (
         <Auth env={env} successCallBack={this.successCallBack} errorCallBack={this.errorCallBack}>

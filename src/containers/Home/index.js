@@ -60,13 +60,13 @@ const ContainerBanner = styled.div`
   position: relative;
 `;
 
-const Gradient = styled.div`
-  position: absolute;
-  height: 113px;
-  width: 100%;
-  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), #ffffff);
-  bottom: 0;
-`;
+// const Gradient = styled.div`
+//   position: absolute;
+//   height: 113px;
+//   width: 100%;
+//   background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), #ffffff);
+//   bottom: 0;
+// `;
 
 const Row = styled.div`
   &:after {
@@ -222,7 +222,6 @@ const Home = ({ isMobile, auth, blocks: dataBlock = [], seo: { seoData, keywords
                             'https://static.chotot.com/storage/default_images/landing/banner-landing.jpg'
                       }
                     />
-                    <Gradient />
                   </ContainerBanner>
                 );
                 break;
