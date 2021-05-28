@@ -19,6 +19,10 @@ export const LOAD_DEEP_LINK_RESOVLER = 'nav/LOAD_DEEP_LINK_RESOVLER';
 export const LOAD_DEEP_LINK_RESOVLER_SUCCESS = 'nav/LOAD_DEEP_LINK_RESOVLER_SUCCESS';
 export const LOAD_DEEP_LINK_RESOVLER_FAIL = 'nav/LOAD_DEEP_LINK_RESOVLER_FAIL';
 
+export const FETCH_CAMPAIGN = 'FETCH_CAMPAIGN';
+export const FETCH_CAMPAIGN_SUCCESS = 'FETCH_CAMPAIGN_SUCCESS';
+export const FETCH_CAMPAIGN_FAILED = 'FETCH_CAMPAIGN_FAILED';
+
 export const getConfigs = () => ({
   types: [GET_CONFIG, GET_CONFIG_SUCCESS, GET_CONFIG_FAIL],
   promise: async () => {
@@ -365,18 +369,19 @@ export function getTotalCount(type, cat, region) {
   });
 }
 
-export const getBlocks = (uri) => {
-  // const url = `https://www.chotot.org/landing-page-admin/config/`;
-  const url = `${config.gatewayUrl}/v1/public/landing-page-admin/campaign/?uri=${uri}`;
-
-  return new Promise((resolve) => {
-    fetch(url)
-      .then((data) => data.json())
-      .then((result) => {
-        return resolve(result);
-      })
-      .catch(() => {
-        return resolve([]);
-      });
-  });
-};
+export const getBlocks = (uri) => ({
+  types: [FETCH_CAMPAIGN, FETCH_CAMPAIGN_SUCCESS, FETCH_CAMPAIGN_FAILED],
+  promise: async () => {
+    const url = `${config.gatewayUrl}/v1/public/landing-page-admin/campaign/?uri=${uri}`;
+    return new Promise((resolve) => {
+      fetch(url)
+        .then((data) => data.json())
+        .then((result) => {
+          return resolve(result);
+        })
+        .catch(() => {
+          return resolve([]);
+        });
+    });
+  },
+});

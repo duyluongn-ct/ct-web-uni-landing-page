@@ -43,16 +43,18 @@ Index.getInitialProps = async (ctx) => {
     }
   }
 
-  const [seoData, blocks] = await Promise.all([
+  const [seoData] = await Promise.all([
     getSeo(query.uri),
-    getBlocks(query.uri),
+    store.dispatch(getBlocks(query.uri)),
     store.dispatch(getRegions()),
   ]);
+
+  const { campaign } = store.getState();
 
   return {
     pageName: 'marketPrice',
     seo: seoData,
-    blocks,
+    blocks: campaign.blocks,
     referer,
     isMobile,
     isServer,
