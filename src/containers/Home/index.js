@@ -257,7 +257,11 @@ const Home = ({ isMobile, auth, blocks: dataBlock = [], seo: { seoData, keywords
                       <img
                         width="100%"
                         alt={block.bannerImageAlt ? block.bannerImageAlt : 'Chương trình ưu đãi'}
-                        src={block.linkImage}
+                        src={
+                          isMobile && block.linkImageMobile
+                            ? block.linkImageMobile
+                            : block.linkImage
+                        }
                       />
                     </a>
                   </Section>
