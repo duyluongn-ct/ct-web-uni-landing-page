@@ -19,35 +19,18 @@ const CatSelectList = styled.div`
   justify-content: space-between;
   background-color: #fff;
   margin-bottom: 12px;
-  padding-bottom: 12px;
+  padding: 6px;
   border-top: ${({ border }) => (border ? '1px solid #f4f4f4' : 'none')};
 `;
 
 const Cat = styled.a`
-  margin: 12px 12px 2px 12px;
-  flex: 1 1 30%;
+  margin: 6px;
+  flex: 1 1 32%;
   height: 120px;
   cursor: pointer;
   background: url(${({ src }) => (src ? src : '')}) no-repeat;
   background-size: cover;
   background-position: center;
-
-  ${mediaBreakPointDown(
-    'ltmd',
-    `
-    flex: 1 1 35%;
-    &:nth-child(odd) {
-      margin-right: 6px;
-    }
-    &:nth-child(even) {
-      margin-left: 6px;
-    }
-    background-position: center;
-          `
-  )};
-
-  img {
-  }
 `;
 
 // const CatInfo = styled.div`
