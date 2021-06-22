@@ -1,5 +1,6 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
+import Head from 'next/head';
 import styled from 'styled-components';
 import Cookies from 'cookies-js';
 
@@ -13,6 +14,7 @@ import { loadSavedAd } from '~app/components/GridAds/SaveAd/action';
 const CustomErrorPage = dynamic(() => import('~app/pages/_error'));
 
 const requires = createRequires(resolve);
+const urlRemoteCss = config.appWrapper.headercss;
 const urlRemote = config.appWrapper.header;
 const urlRemoteFooter = config.appWrapper.footer;
 const urlRemotePlaceHolder = config.appWrapper.placeholder;
@@ -125,6 +127,9 @@ function withLayout(Child) {
         <Auth env={env} successCallBack={this.successCallBack} errorCallBack={this.errorCallBack}>
           {({ auth: { user, shop } }) => (
             <>
+              <Head>
+                <link rel="stylesheet" href={urlRemoteCss} key="headercss" />
+              </Head>
               <RemoteComponent
                 url={urlRemote}
                 placeholder={remotePlaceHolderData}
