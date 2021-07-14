@@ -11,6 +11,7 @@ import GridAds from '~app/components/GridAds/GridAds';
 import SnackBar from '~app/components/SnackBar/SnackBar';
 import { resetMessage } from '~app/components/GridAds/SaveAd/action';
 import { Cats } from '~app/components/Cats/Cats';
+import { config } from '~app/config';
 
 const WrapperHome = styled.div`
   margin: 0 auto;
@@ -191,6 +192,7 @@ const Home = ({ isMobile, auth, blocks: dataBlock = [], seo: { seoData, keywords
         <title>{seoData.title}</title>
         {seoData.meta &&
           seoData.meta.map((item, index) => <meta key={index.toString()} {...item} />)}
+        <link rel="canonical" href={`${config.baseURL}/${seoData.uri || dataBlock.uri || ''}`} />
         <meta
           name="og:image"
           content={

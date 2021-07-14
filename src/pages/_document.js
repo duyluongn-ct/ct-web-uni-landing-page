@@ -1,7 +1,6 @@
 import Document, { Head, Main, NextScript } from 'next/document';
 import { ServerStyleSheet } from 'styled-components';
 import { APPLE_METAS_LINKS } from '~app/utils/constants';
-import { config } from '~app/config';
 
 export default class ServerDocument extends Document {
   renderAppleMetas() {
@@ -36,7 +35,6 @@ export default class ServerDocument extends Document {
             content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
           />
           <link rel="shortcut icon" href="https://www.chotot.com/chotot-img/favicon.ico" />
-          <link rel="canonical" href={config.propertyURL} />
           <script async src="https://static.chotot.com/storage/js/prebid-ads.js" />
           {this.renderAppleMetas()}
           {this.renderAppleLinks()}
