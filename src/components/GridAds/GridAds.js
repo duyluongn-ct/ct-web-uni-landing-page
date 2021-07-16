@@ -142,7 +142,7 @@ const GridAds = ({
   const listAdsHtml = [];
   for (let i = 0; i < ads.length; i += 1) {
     const ad = ads[i];
-    const adViewUrl = `${config.propertyURL}${buildAdViewUrl(ad, allCategoriesFollowId)}`;
+    const adViewUrl = `${config.baseURL}${buildAdViewUrl(ad, allCategoriesFollowId)}`;
     const adParams = getAdParams(ad, adListingParams);
 
     listAdsHtml.push(
