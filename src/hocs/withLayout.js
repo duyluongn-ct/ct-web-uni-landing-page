@@ -101,8 +101,8 @@ function withLayout(Child) {
 
       const site = {
         siteName: campaign.blocks.siteName || 'c2c',
-        dropDownSearch: true,
-        href: `${config.propertyURL}`,
+        dropDownSearch: false,
+        href: `${config.baseURL}`,
         actions: {
           search: (text) => {
             if (typeof window !== 'undefined') {

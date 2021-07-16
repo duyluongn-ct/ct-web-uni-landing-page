@@ -195,7 +195,7 @@ const Home = ({ isMobile, auth, blocks: dataBlock = [], seo: { seoData, keywords
           name="og:image"
           content={
             dataBlock.blocks && dataBlock.blocks[0]
-              ? dataBlock.blocks[0].bannerImageMobile
+              ? dataBlock.blocks[0].bannerImageMobile || dataBlock.blocks[0].linkImage
               : 'https://static.chotot.com/storage/marketplace/transparent_logo.png'
           }
         />
