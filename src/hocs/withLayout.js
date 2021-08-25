@@ -89,6 +89,19 @@ function withLayout(Child) {
       pushPageMetadataIsLogin({ auth: { authenticated: false } });
     };
 
+    getBaseUrl = (siteName) => {
+      switch (siteName) {
+        case 'vehicle':
+          return config.vehicleURL;
+        case 'property':
+          return config.propertyURL;
+        case 'job':
+          return config.jobBaseUrl;
+        default:
+          return config.baseURL;
+      }
+    };
+
     render() {
       const { router, store, remotePlaceHolderData, err, blocks } = this.props;
       const { campaign } = store.getState();
@@ -100,7 +113,7 @@ function withLayout(Child) {
       const site = {
         siteName: campaign.blocks.siteName || 'c2c',
         dropDownSearch: false,
-        href: `${config.baseURL}`,
+        href: `${this.getBaseUrl()}`,
         actions: {
           search: (text) => {
             if (typeof window !== 'undefined') {
