@@ -127,6 +127,7 @@ const GridAds = ({
   handleClickLoadMore,
   adItemLocation,
   adListingParams,
+  siteName,
 }) => {
   const [ads, setAds] = useState([]);
   const [isDone, setIsDone] = useState(false);
@@ -139,10 +140,23 @@ const GridAds = ({
     fetchMyAPI();
   }, []);
 
+  const getBaseUrl = () => {
+    switch (siteName) {
+      case 'vehicle':
+        return config.vehicleURL;
+      case 'property':
+        return config.propertyURL;
+      case 'job':
+        return config.jobBaseUrl;
+      default:
+        return config.baseURL;
+    }
+  };
+
   const listAdsHtml = [];
   for (let i = 0; i < ads.length; i += 1) {
     const ad = ads[i];
-    const adViewUrl = `${config.baseURL}${buildAdViewUrl(ad, allCategoriesFollowId)}`;
+    const adViewUrl = `${getBaseUrl()}${buildAdViewUrl(ad, allCategoriesFollowId)}`;
     const adParams = getAdParams(ad, adListingParams);
 
     listAdsHtml.push(

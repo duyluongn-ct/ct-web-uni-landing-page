@@ -16,6 +16,7 @@ export const config = {
   gtmContainerId: GTM_CONTAINERID,
   baseURL: `https://www.chotot.${baseDomain}`,
   vehicleURL: `https://xe.chotot.${baseDomain}`,
+  jobBaseUrl: `https://www.vieclamtot.${baseDomain}`,
   accountBaseUrl: `https://accounts.chotot.${baseDomain}`,
   gatewayUrl: `https://gateway.chotot.${baseDomain}`,
   propertyURL: `https://nha.chotot.${baseDomain}`,
