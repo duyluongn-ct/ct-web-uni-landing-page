@@ -1,9 +1,10 @@
+import React from 'react';
 import styled from 'styled-components';
 import { mediaBreakPointDown } from '~app/utils/breakpoint';
 
 const Wrapper = styled.div`
   background: #ffffff;
-  margin-bottom: 12px;
+  // margin-bottom: 12px;
 
   ${mediaBreakPointDown(
     'md',
@@ -18,14 +19,14 @@ const CatSelectList = styled.div`
   flex-wrap: wrap;
   justify-content: space-between;
   background-color: #fff;
-  margin-bottom: 12px;
+  // margin-bottom: 12px;
   padding: 6px;
   border-top: ${({ border }) => (border ? '1px solid #f4f4f4' : 'none')};
 `;
 
 const Cat = styled.a`
   margin: 6px;
-  flex: 1 1 32%;
+  flex: 1 1 ${({ isFourItems, isMobile }) => (isFourItems && !isMobile ? '22%' : '32%')};
   height: 120px;
   cursor: pointer;
   background: url(${({ src }) => (src ? src : '')}) no-repeat;
@@ -139,6 +140,8 @@ export const Cats = ({
               title={item.imageAlt}
               onClick={() => onClick(item.link, item.shortcutId)}
               href={item.link}
+              isFourItems={data && data.length === 4}
+              isMobile={isMobile}
             >
               {/* <CatInfo>
                 <a className="link" href={item.link}>
