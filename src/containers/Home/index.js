@@ -26,7 +26,7 @@ const WrapperHome = styled.div`
 const Section = styled.div`
   margin: 0 auto;
   padding: 12px;
-  margin-bottom: 12px;
+  // margin-bottom: 12px;
   max-width: 960px;
   position: relative;
   background: url('https://static.chotot.com/storage/default_images/landing/section.jpg') no-repeat;
@@ -55,6 +55,7 @@ const Section = styled.div`
 `;
 
 const ContainerBanner = styled.div`
+  display: flex;
   margin: 0 auto;
   max-width: 960px;
   position: relative;

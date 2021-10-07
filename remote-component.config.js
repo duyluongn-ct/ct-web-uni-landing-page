@@ -6,7 +6,7 @@
  *
  * Dependencies for Remote Components
  */
- export const resolve = {
+export const resolve = {
   react: require('react'),
   'react-dom': require('react-dom'),
   redux: require('redux'),
