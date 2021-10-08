@@ -297,6 +297,7 @@ const Home = ({ isMobile, auth, blocks: dataBlock = [], seo: { seoData, keywords
                     handleTitleClick={handleTitleClick}
                     handleClickAdView={handleClickAdView}
                     handleClickLoadMore={handleClickLoadMore}
+                    siteName={dataBlock.siteName}
                   />
                 );
                 break;
