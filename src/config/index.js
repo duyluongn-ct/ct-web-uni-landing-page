@@ -7,7 +7,9 @@ const GTM_CONTAINERID =
 
 const configs = require('ct-helpers')[env];
 
-const appWrapperBaseUrl = `https://static.chotot.com/storage/APP_WRAPPER/v2/${env}`;
+const appWrapperBasedUrl = 'https://static.chotot.com/storage/APP_WRAPPER';
+const getAppWrapperBasedUrl = (buildVersion) =>
+  `${appWrapperBasedUrl}/${env}${buildVersion ? `/${buildVersion}` : ''}`;
 
 export const config = {
   ...configs,
@@ -33,13 +35,13 @@ export const config = {
   bannerAPI: 'http://buyer-collection.default.svc.cluster.local/api',
   errorImgUrl: 'https://static.chotot.com/storage/empty_state/desktop/',
   appWrapper: {
-    header: `${appWrapperBaseUrl}/header.js`,
-    headercss: `${appWrapperBaseUrl}/header.css`,
-    footer: `${appWrapperBaseUrl}/footer.js`,
-    footercss: `${appWrapperBaseUrl}/footer.css`,
-    placeholder: `${appWrapperBaseUrl}/placeholder.js`,
-    savesearchbutton: `${appWrapperBaseUrl}/savesearchbutton.js`,
-    savesearchbuttoncss: `${appWrapperBaseUrl}/savesearchbutton.css`,
+    getBasedUrl: getAppWrapperBasedUrl,
+    header: 'header.js',
+    headercss: 'header.css',
+    footer: 'footer.js',
+    savesearchbutton: 'savesearchbutton.js',
+    placeholder: 'placeholder.js',
+    target: 'v2',
   },
   experiment: {
     newhome: {

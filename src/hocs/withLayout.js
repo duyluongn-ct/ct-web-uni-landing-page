@@ -1,28 +1,19 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
-import styled from 'styled-components';
 import Cookies from 'cookies-js';
 
 import { RemoteComponent, createRequires } from 'remote-component';
 import { resolve } from 'remote-component.config.js';
 import Auth from 'ct-auth';
-import { config, env } from '~app/config';
+import { config } from '~app/config';
 import { pushPageMetadataIsLogin } from '~app/utils/gtmTracking';
 import { loadSavedAd } from '~app/components/GridAds/SaveAd/action';
 
 const CustomErrorPage = dynamic(() => import('~app/pages/_error'));
 
 const requires = createRequires(resolve);
-const urlRemoteCss = config.appWrapper.headercss;
-const urlRemote = config.appWrapper.header;
-const urlRemoteFooter = config.appWrapper.footer;
-const urlRemotePlaceHolder = config.appWrapper.placeholder;
-
-const Main = styled.main`
-  min-height: calc(100vh - 270px);
-  background-color: ${({ theme }) => (theme ? theme : '')};
-`;
+const { appWrapper } = config;
 
 const originalFetch = require('isomorphic-fetch');
 const fetch = require('fetch-retry')(originalFetch);
@@ -38,7 +29,7 @@ function withLayout(Child) {
   class WrappedComponent extends React.Component {
     static async getInitialProps(context) {
       try {
-        const { isMobile } = context;
+        const { isMobile, appWrapperVersion } = context;
         const pageProp = await Child.getInitialProps(context);
 
         const fetcher = (url) =>
@@ -58,13 +49,16 @@ function withLayout(Child) {
           });
 
         let myModule = null;
-        if (cache.has('placeholder')) {
-          console.log('\n=====>>>>> CACHE PlaceHolder');
-          myModule = cache.get('placeholder');
+        const remoteVersion = appWrapperVersion[appWrapper.target];
+        const cacheKey = `placeholder-${remoteVersion}`;
+        if (cache.has(cacheKey)) {
+          myModule = cache.get(cacheKey);
         } else {
-          myModule = await fetcher(urlRemotePlaceHolder);
-          cache.set('placeholder', myModule);
+          const appWrapperBasedUrl = appWrapper.getBasedUrl(remoteVersion);
+          myModule = await fetcher(`${appWrapperBasedUrl}/${appWrapper.placeholder}`);
+          cache.set(cacheKey, myModule);
         }
+
         return {
           ...pageProp,
           remotePlaceHolderData: {
@@ -105,12 +99,17 @@ function withLayout(Child) {
     };
 
     render() {
-      const { router, store, remotePlaceHolderData, err, blocks } = this.props;
-      const { campaign } = store.getState();
+      const { router, store, remotePlaceHolderData, err } = this.props;
 
       if (err) {
         return <CustomErrorPage statusCode={err.statusCode} />;
       }
+
+      const {
+        campaign,
+        config: { appWrapperVersion },
+      } = store.getState();
+      const appWrapperBasedUrl = appWrapper.getBasedUrl(appWrapperVersion[appWrapper.target]);
 
       const site = {
         siteName: campaign.blocks.siteName || 'c2c',
@@ -137,38 +136,35 @@ function withLayout(Child) {
       };
 
       return (
-        <Auth env={env} successCallBack={this.successCallBack} errorCallBack={this.errorCallBack}>
-          {({ auth: { user, shop } }) => (
-            <>
-              <Head>
-                <link rel="stylesheet" href={urlRemoteCss} key="headercss" />
-              </Head>
-              <RemoteComponent
-                url={urlRemote}
-                placeholder={remotePlaceHolderData}
-                requires={requires}
-                store={store}
-                location={router}
-                site={site}
-                user={user}
-                shop={shop}
-                env={env}
-              />
-              <Main theme={blocks?.theme}>
-                <Child {...this.props} />
-              </Main>
-              <RemoteComponent
-                url={urlRemoteFooter}
-                requires={requires}
-                location={router}
-                site={site}
-                user={user}
-                shop={shop}
-                env={env}
-              />
-            </>
-          )}
-        </Auth>
+        <>
+          <Auth env={config.env} beforeAuthenticate={this.beforeAuthenticate}>
+            {() => <div />}
+          </Auth>
+          <Head>
+            <link
+              rel="stylesheet"
+              href={`${appWrapperBasedUrl}/${appWrapper.headercss}`}
+              key="headercss"
+            />
+          </Head>
+          <RemoteComponent
+            url={`${appWrapperBasedUrl}/${appWrapper.header}`}
+            placeholder={remotePlaceHolderData}
+            requires={requires}
+            store={store}
+            location={router}
+            site={site}
+            env={config.env}
+          />
+          <Child {...this.props} />
+          <RemoteComponent
+            url={`${appWrapperBasedUrl}/${appWrapper.footer}`}
+            requires={requires}
+            location={router}
+            site={site}
+            env={config.env}
+          />
+        </>
       );
     }
   }
