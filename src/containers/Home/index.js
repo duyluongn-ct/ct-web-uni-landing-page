@@ -109,7 +109,7 @@ const Home = ({ isMobile, auth, blocks: dataBlock = [], seo: { seoData, keywords
     subRegionName: 'Tất cả',
   });
   const categories = useSelector((state) => state.categories);
-  const { categoriesFollowId: allCategoriesFollowId = {} } = categories;
+  const { allCategoriesFollowId = {} } = categories;
 
   const saveAdMessage = useSelector((state) => state.savedAd.message);
   const mappingFeaturesAdData = useSelector((state) => state.adFeature.mapping);

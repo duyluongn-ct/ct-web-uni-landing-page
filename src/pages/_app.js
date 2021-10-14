@@ -53,7 +53,7 @@ export class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
     const {
       req,
-      store: { dispatch },
+      store: { dispatch, getState },
     } = ctx;
     const isServer = !!ctx.req;
     const appProps = getInitProps(ctx);
@@ -65,7 +65,14 @@ export class MyApp extends App {
 
     if (isServer && req) {
       await dispatch(loadAdFeature());
-      await dispatch(getChapyConfig());
+    }
+
+    const { config: cconf } = getState();
+    if (isServer && !cconf.appWrapperVersion) {
+      const result = await dispatch(getChapyConfig());
+      ctx.appWrapperVersion = result['app_wrapper_version'];
+    } else {
+      ctx.appWrapperVersion = cconf.appWrapperVersion;
     }
 
     return {
