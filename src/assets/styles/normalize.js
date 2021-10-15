@@ -185,9 +185,6 @@ const normalize = `
   template {
     display: none;
   }
-  .appWrapper-containers-Notification-Item-media-body p {
-    font-size: 14px !important;
-  }
   [hidden] {
     display: none;
   }
