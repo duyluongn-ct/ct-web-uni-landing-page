@@ -29,6 +29,9 @@ const GlobalStyle = createGlobalStyle`
   header, footer {
     display: ${({ app }) => (app ? 'none' : ' block')}
   }
+  header + div {
+    display: ${({ app }) => (app ? 'none' : ' block')}
+  }
   .desc-bottom {
     display: ${({ app }) => (app ? 'none' : ' block')}
   }
