@@ -17,29 +17,15 @@ const GlobalStyle = createGlobalStyle`
   ${normalize}
   * {
     font-family: Helvetica, Arial, sans-serif;
-    font-size: 14px;
     /* font-size: 62.5%; */
     box-sizing: border-box;
 
   }
   body {
     margin: 0;
-    font-size: 14px;
     background-color: #F4F4F4;
     -webkit-overflow-scrolling: touch;
     -webkit-font-smoothing: antialiased;
-  }
-  header div, footer div {
-    font-size: 14px;
-  }
-  header span, footer span, a span {
-    font-size: 14px;
-  }
-  header a, footer a {
-    font-size: 14px;
-  }
-  header b, footer b {
-    font-size: 14px;
   }
   header, footer {
     display: ${({ app }) => (app ? 'none' : ' block')}
@@ -53,7 +39,7 @@ export class MyApp extends App {
   static async getInitialProps({ Component, ctx }) {
     const {
       req,
-      store: { dispatch },
+      store: { dispatch, getState },
     } = ctx;
     const isServer = !!ctx.req;
     const appProps = getInitProps(ctx);
@@ -65,7 +51,14 @@ export class MyApp extends App {
 
     if (isServer && req) {
       await dispatch(loadAdFeature());
-      await dispatch(getChapyConfig());
+    }
+
+    const { config: cconf } = getState();
+    if (isServer && !cconf.appWrapperVersion) {
+      const result = await dispatch(getChapyConfig());
+      ctx.appWrapperVersion = result['app_wrapper_version'];
+    } else {
+      ctx.appWrapperVersion = cconf.appWrapperVersion;
     }
 
     return {
