@@ -140,19 +140,19 @@ export function isAuth() {
 
 export function getObjectCategory(pattern, list, key) {
   let result = DEFAULT_OBJECT_CATEGORY;
-  const condition =
+  if (
     pattern === undefined ||
     list === null ||
     (list && list.entities === undefined) ||
     pattern === result.route ||
-    pattern === result.value;
-  if (condition) {
+    pattern === result.value
+  ) {
     return result;
   }
 
   const findSubCategory = () => {
     let resultSubCate = false;
-    if (list.entities) {
+    if (list && list.entities) {
       Object.keys(list.entities).forEach((keyName) => {
         const subCat = list.entities[keyName].subCategories;
         if (subCat && subCat.entities && subCat.entities[pattern]) {
@@ -163,52 +163,39 @@ export function getObjectCategory(pattern, list, key) {
     return resultSubCate;
   };
 
-  const mainCategory = list.entities[pattern];
-  const objectFound = mainCategory || findSubCategory();
-  if (objectFound) {
-    result = {
-      label: objectFound.name,
-      value: objectFound.id,
-      route: objectFound.name_url,
-      id: objectFound.id,
-      paramType: objectFound.param_type,
-    };
-    // if specify a key of object category => return value of this key.
-    if (key) {
-      return result[key];
+  if (list && list.entities) {
+    const mainCategory = list.entities[pattern];
+    const objectFound = mainCategory || findSubCategory();
+    if (objectFound) {
+      result = {
+        label: objectFound.name,
+        value: objectFound.id,
+        route: objectFound.name_url,
+        id: objectFound.id,
+        paramType: objectFound.param_type,
+      };
+      // if specify a key of object category => return value of this key.
+      if (key) {
+        return result[key];
+      }
+      return result;
     }
-    return result;
   }
   return false;
 }
 
-const OVERRIDE_REGION_URL = {
-  'quan-thu-duc-thanh-pho-thu-duc': 'quan-thu-duc',
-  'quan-2-thanh-pho-thu-duc': 'quan-2',
-  'quan-9-thanh-pho-thu-duc': 'quan-9',
-};
-
 export const buildAdViewUrl = (adInfo, allCategoriesFollowId) => {
   let fullAdViewUrl = '';
   let dashboardAdViewUrl;
-  const isFriendlyAdType = adInfo.category >= 2000;
-  const adViewParts = isFriendlyAdType
-    ? ['category', 'area_name', 'region_name', 'list_id']
-    : ['region_name', 'area_name', 'category', 'list_id'];
-  const diviner = isFriendlyAdType ? '-' : '/';
-  adViewParts.forEach((key) => {
+  ['region_name', 'area_name', 'category', 'list_id'].forEach((key) => {
     if (adInfo[key]) {
       switch (key) {
         case 'region_name': {
-          fullAdViewUrl = `${fullAdViewUrl}${diviner}${nameToUrl(adInfo[key])}`;
+          fullAdViewUrl = `${fullAdViewUrl}/${nameToUrl(adInfo[key])}`;
           break;
         }
         case 'area_name': {
-          const areaUrl = nameToUrl(adInfo[key]);
-          const overrideArea = OVERRIDE_REGION_URL[areaUrl]
-            ? OVERRIDE_REGION_URL[areaUrl]
-            : areaUrl;
-          fullAdViewUrl = `${fullAdViewUrl}${diviner}${overrideArea}`;
+          fullAdViewUrl = `${fullAdViewUrl}/${nameToUrl(adInfo[key])}`;
           break;
         }
         case 'category': {

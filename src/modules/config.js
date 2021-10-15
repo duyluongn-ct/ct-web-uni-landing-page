@@ -28,7 +28,6 @@ export default function reducer(state = initialState, action = {}) {
     case GET_CHAPY_CONFIG_SUCCESS:
       return {
         ...state,
-        appWrapperVersion: action?.result['app_wrapper_version'] || '2.0.45',
         safeTips: action.result.tips,
         chatEnable: action.result['chat.enable'],
         rewardEnable: action.result['features']['reward.enable'],
