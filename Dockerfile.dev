@@ -1,0 +1,10 @@
+FROM node:12.6.0-alpine
+WORKDIR /landing-page
+
+COPY . ./
+RUN yarn install
+RUN yarn build
+
+EXPOSE 3000
+ENTRYPOINT ["yarn"]
+CMD [ "run", "start" ]

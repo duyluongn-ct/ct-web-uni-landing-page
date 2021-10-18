@@ -1,0 +1,13 @@
+version: '3.3'
+services:
+  web:
+    build:
+      dockerfile: Dockerfile.dev
+      context: .
+    ports:
+      - 3000:3000
+    environment:
+      ENV: production
+      NODE_ENV: production
+      BASE_DOMAIN: com
+      GTM_CONTAINERID: GTM-NZKHXF7

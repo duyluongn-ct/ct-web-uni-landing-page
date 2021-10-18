@@ -133,8 +133,21 @@ export function getBanners() {
   });
 }
 
-export function getSeo(uri) {
-  const url = `${config.gatewayUrl}/v1/public/seo-api/tag?siteId=3&uri=${uri}`;
+const getSiteId = (site) => {
+  switch (site) {
+    case 'vehicle':
+      return '2';
+    case 'property':
+      return '3';
+    case 'job':
+      return '4';
+    default:
+      return '1';
+  }
+};
+
+export function getSeo(uri, site) {
+  const url = `${config.gatewayUrl}/v1/public/seo-api/tag?siteId=${getSiteId(site)}&uri=${uri}`;
 
   return new Promise((resolve) => {
     fetch(url)
