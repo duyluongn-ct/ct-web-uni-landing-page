@@ -270,11 +270,13 @@ const Home = ({ isMobile, auth, blocks: dataBlock = [], seo: { seoData, keywords
                   </Section>
                 );
                 break;
+              case 'ad-hoc':
               case 'filtered-ads':
                 sec = block.filteredAd && (
                   <GridAds
                     key={`sec-${block.id}`}
                     type="adCat1"
+                    isAdHoc={block.type === 'ad-hoc'}
                     sectionId={block.sectionId}
                     isMobile={isMobile}
                     imgTitle={
