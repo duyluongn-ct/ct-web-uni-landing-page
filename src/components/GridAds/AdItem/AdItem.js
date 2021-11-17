@@ -97,6 +97,7 @@ const AdItem = ({
             adViewUrl={adViewUrl}
             locationName={locationName}
             giveaway={adInfo.giveaway}
+            canDeposit={adInfo['can_deposit']}
           />
         </a>
       </div>

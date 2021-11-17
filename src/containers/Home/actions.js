@@ -386,6 +386,7 @@ export const getBlocks = (uri) => ({
   types: [FETCH_CAMPAIGN, FETCH_CAMPAIGN_SUCCESS, FETCH_CAMPAIGN_FAILED],
   promise: async () => {
     const url = `${config.gatewayUrl}/v1/public/landing-page-admin/campaign/?uri=${uri}`;
+    // const url = `http://localhost:8080/api/v1/public/campaign/?uri=${uri}`;
     return new Promise((resolve) => {
       fetch(url)
         .then((data) => data.json())

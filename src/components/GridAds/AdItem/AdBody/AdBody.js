@@ -6,6 +6,9 @@ import FallbackImage from '../../FallbackImage/FallbackImage';
 import { getDataByType } from '../../service/getDataByType';
 import LabelAd from '../../LabelAd';
 
+const GridAdDepositIcon =
+  'https://static.chotot.com/storage/assets/ESCROW/escrow_protected_deposit.png';
+
 const AdBody = ({
   giftId,
   title,
@@ -20,6 +23,7 @@ const AdBody = ({
   adParams,
   locationName,
   giveaway,
+  canDeposit,
 }) => {
   const htmlLabelTitleAd = titleAd && (
     <LabelAd labelInfo={titleAd} commonClass={`${commonStyle.commonStyleLabelGrid}`} />
@@ -49,6 +53,14 @@ const AdBody = ({
       <div className={Style.wrapperPrice}>
         {price.length > 0 && <span className={Style.price}>{price}</span>}
         {htmlLabelPriceAd}
+        {canDeposit ? (
+          <>
+            &nbsp;
+            <img src={GridAdDepositIcon} alt="ad deposit" width="90px" />
+          </>
+        ) : (
+          ''
+        )}
       </div>
     );
   };

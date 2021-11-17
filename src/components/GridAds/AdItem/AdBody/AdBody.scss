@@ -1,6 +1,12 @@
 @import '../../../../assets/styles/ct-variables.scss';
 @import '../../../../assets/styles/respond-mixin.scss';
 
+.wrapperPrice {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
 .caption {
   padding-bottom: 8px;
   position: relative;
@@ -11,7 +17,7 @@
     line-height: 1.33;
     color: #d0021b;
     display: inline-block;
-    margin: 2px 4px 0 0;
+    // margin: 2px 4px 0 0;
   }
 
   .conditionWrapper {

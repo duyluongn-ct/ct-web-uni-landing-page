@@ -7,6 +7,7 @@ import { mediaBreakPointDown } from '~app/utils/breakpoint';
 import WrapperScroll from '~app/components/WrapperScroll/WrapperScroll';
 import AdItem from './AdItem/AdItem';
 import LoadMore from './LoadMore/LoadMore';
+import GridLoadMore from './LoadMore/GridLoadMore';
 import { getAdParams } from './service/getDataByType';
 import styles from './styles.scss';
 import { getAds } from '~app/containers/Home/actions';
@@ -128,15 +129,20 @@ const GridAds = ({
   adItemLocation,
   adListingParams,
   siteName,
+  isAdHoc,
 }) => {
   const [ads, setAds] = useState([]);
+  const [latestAdLength, setLatestAdLength] = useState(0);
   const [isDone, setIsDone] = useState(false);
+  const [currentOffset, setCurrentOffset] = useState(0);
+  async function fetchMyAPI(offset = currentOffset) {
+    const url = offset ? `${urlApi}&o=${offset}` : urlApi;
+    const { ads: adsList, isDone: isDoneLoad } = await getAds(url);
+    setIsDone(isDoneLoad);
+    setLatestAdLength(adsList.length);
+    setAds([...ads, ...adsList]);
+  }
   useEffect(() => {
-    async function fetchMyAPI() {
-      const { ads: adsList, isDone: isDoneLoad } = await getAds(urlApi);
-      setIsDone(isDoneLoad);
-      setAds(adsList);
-    }
     fetchMyAPI();
   }, []);
 
@@ -172,6 +178,20 @@ const GridAds = ({
           adParams={adParams}
         />
       </React.Fragment>
+    );
+  }
+
+  if (isAdHoc && latestAdLength >= 10) {
+    listAdsHtml.push(
+      <GridLoadMore
+        sectionId={sectionId}
+        handleClickLoadmore={() => {
+          const offset = currentOffset + 10;
+          fetchMyAPI(offset);
+          setCurrentOffset(offset);
+          handleClickLoadMore(sectionId);
+        }}
+      />
     );
   }
 
@@ -221,12 +241,14 @@ const GridAds = ({
             : listAdsHtml}
         </Grid>
       </WrapperScroll>
-      <LoadMore
-        sectionId={sectionId}
-        link={link}
-        total={total}
-        handleClickLoadmore={handleClickLoadMore}
-      />
+      {!isAdHoc && (
+        <LoadMore
+          sectionId={sectionId}
+          link={link}
+          total={total}
+          handleClickLoadmore={handleClickLoadMore}
+        />
+      )}
     </Wrapper>
   );
 };
@@ -238,6 +260,7 @@ GridAds.propTypes = {
   allCategoriesFollowId: PropTypes.shape({}).isRequired,
   adItemLocation: PropTypes.string,
   adListingParams: PropTypes.arrayOf(PropTypes.object),
+  isAdHoc: PropTypes.bool.isRequired,
 };
 
 GridAds.defaultProps = {
