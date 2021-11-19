@@ -55,6 +55,14 @@ export default class WrapperScroll extends PureComponent {
     }
   }
 
+  // eslint-disable-next-line react/no-deprecated
+  componentWillReceiveProps(nextProps) {
+    const { total } = this.props;
+    if (total !== nextProps.total && nextProps.total && nextProps.total - 1 > 5) {
+      this.setState({ isShowIconNext: true });
+    }
+  }
+
   componentWillUnmount() {
     this.refWrapper.removeEventListener('scroll', this.handleScroll);
   }
@@ -110,11 +118,8 @@ export default class WrapperScroll extends PureComponent {
 
   render() {
     const { children, cols, className, hideIconPrev, total } = this.props;
-    let { isShowIconPrev, isShowIconNext } = this.state;
-    if (total < cols) {
-      isShowIconNext = false;
-      isShowIconPrev = false;
-    }
+    const { isShowIconPrev, isShowIconNext } = this.state;
+    const isDisable = total < cols;
     if (children) {
       return (
         <div className={Style.wrapperOverflow}>
@@ -128,7 +133,7 @@ export default class WrapperScroll extends PureComponent {
           </div>
           <i
             className={`i-prev ${Style.iconPrev} ${
-              !hideIconPrev && isShowIconPrev && Style.active
+              !hideIconPrev && !isDisable && isShowIconPrev && Style.active
             }`}
             onClick={(e) => this.onClick(e, true)}
             tabIndex={0}
@@ -136,7 +141,7 @@ export default class WrapperScroll extends PureComponent {
             aria-label="Prev"
           />
           <i
-            className={`i-next ${Style.iconNext} ${isShowIconNext && Style.active}`}
+            className={`i-next ${Style.iconNext} ${!isDisable && isShowIconNext && Style.active}`}
             onClick={(e) => this.onClick(e)}
             tabIndex={0}
             role="button"
