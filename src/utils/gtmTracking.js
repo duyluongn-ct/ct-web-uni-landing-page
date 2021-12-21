@@ -113,7 +113,6 @@ export function pushPageMetadata(pageType) {
     event: 'page_metadata',
     page_type: pageType || 'pty_homepage',
     // experiment: `${config.experiment.newhome.id}.1`,
-    category_id: 1000,
     region_id: regionLocation.regionValue,
     region_name: regionLocation.regionName,
   });
