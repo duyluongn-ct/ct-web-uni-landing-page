@@ -7,7 +7,7 @@
   "author": "<thangphan@chotot.vn>",
   "license": "MIT",
   "scripts": {
-    "dev": "ENV=development NODE_ENV=development BASE_DOMAIN=org node ./server",
+    "dev": "NODE_ENV=development node ./server",
     "staging": "NODE_ENV=staging node ./server",
     "uat": "NODE_ENV=uat node ./server",
     "start": "node ./server",
