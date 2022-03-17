@@ -81,6 +81,7 @@ const AdItem = ({
             numberOfImages={adInfo.number_of_images}
             adViewUrl={adViewUrl}
             ribbonAd={ribbonAd && <RibbonAd labelInfo={ribbonAd} commonClass={Styles.ribbonAd} />}
+            canDeposit={adInfo['can_deposit']}
           />
           <AdBody
             giftId={adInfo.gift_id || 0}
@@ -97,7 +98,6 @@ const AdItem = ({
             adViewUrl={adViewUrl}
             locationName={locationName}
             giveaway={adInfo.giveaway}
-            canDeposit={adInfo['can_deposit']}
           />
         </a>
       </div>
