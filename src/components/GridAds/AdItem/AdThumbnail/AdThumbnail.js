@@ -8,7 +8,7 @@ const handleErrorImage = (e) => {
   image.style.display = 'none';
 };
 
-const AdThumbnail = ({ image, title, numberOfImages, ribbonAd, saveAdButton }) => (
+const AdThumbnail = ({ image, title, numberOfImages, ribbonAd, saveAdButton, canDeposit }) => (
   <div className={Style.thumbnailWrapper}>
     <div className={Style.thumbnailImg}>
       {image && (
@@ -25,6 +25,7 @@ const AdThumbnail = ({ image, title, numberOfImages, ribbonAd, saveAdButton }) =
         </div>
       )}
       {ribbonAd && ribbonAd}
+      {canDeposit && <div className={Style.AdEscrowLabel} />}
     </div>
     {saveAdButton && saveAdButton}
   </div>
