@@ -13,6 +13,7 @@ import { resetMessage } from '~app/components/GridAds/SaveAd/action';
 import { Cats } from '~app/components/Cats/Cats';
 import { config } from '~app/config';
 import Iframe from '~app/components/Iframe/Iframe';
+import Youtube from '~app/components/Youtube/Youtube';
 
 const WrapperHome = styled.div`
   margin: 0 auto;
@@ -307,6 +308,9 @@ const Home = ({ isMobile, auth, blocks: dataBlock = [], seo: { seoData, keywords
 
               case 'iframe':
                 sec = <Iframe embedIframeUrl={block.embedIframeUrl} />;
+                break;
+              case 'youtube':
+                sec = <Youtube embedYoutubeUrl={block.embedYoutubeUrl} />;
                 break;
               default:
                 break;
