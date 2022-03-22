@@ -127,7 +127,7 @@ function withLayout(Child) {
               if (listingParams.subRegion) {
                 url = `${url}/${listingParams.subRegion}`;
               }
-              url = `${config.baseURL}/${url}/mua-ban?q=${text}`;
+              url = `${this.getBaseUrl()}/${url}/mua-ban?q=${text}`;
               Cookies.set('searchNavigation', '1');
               window.location.href = url;
             }

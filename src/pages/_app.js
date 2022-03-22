@@ -19,7 +19,6 @@ const GlobalStyle = createGlobalStyle`
     font-family: Helvetica, Arial, sans-serif;
     /* font-size: 62.5%; */
     box-sizing: border-box;
-
   }
   body {
     margin: 0;
