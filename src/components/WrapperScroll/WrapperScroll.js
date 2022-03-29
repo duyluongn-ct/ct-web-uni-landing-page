@@ -70,7 +70,9 @@ export default class WrapperScroll extends PureComponent {
   onClick = (e, isScrollLeft) => {
     const { widthScroll } = this.props;
     const { childNodes, scrollWidth, scrollLeft } = this.refWrapper;
-    const numberScroll = widthScroll || Math.round(scrollWidth / childNodes.length) + 100;
+
+    const numberScroll =
+      widthScroll || Math.round(scrollWidth / childNodes[0]?.childNodes.length) + 100;
 
     if (isScrollLeft) {
       this.refWrapper.scrollTo({
